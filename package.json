@@ -17,8 +17,13 @@
   },
   "homepage": "https://github.com/josephworks/josephbot#readme",
   "dependencies": {
-    "@discordjs/rest": "0.1.0-canary.0",
+    "@discordjs/opus": "^0.5.3",
+    "@discordjs/rest": "^0.1.0-canary.0",
+    "@discordjs/voice": "^0.7.2",
     "discord-api-types": "^0.23.1",
-    "discord.js": "^13.2.0"
+    "discord.js": "^13.3.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.1.0"
   }
 }
