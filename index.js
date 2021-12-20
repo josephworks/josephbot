@@ -74,7 +74,7 @@ client.on("messageCreate", (message) => {
       .setFooter("Made by Avri#1000");
     message.channel.send({ embeds: [embed] });
   } else if (message.content.startsWith(`${prefix}kick`)) {
-    if (!message.member.hasPermission("KICK_MEMBERS")) return message.channel.send("You do not have permission to use this command!");
+    if (!message.member.permissions.has("KICK_MEMBERS")) return message.channel.send("You do not have permission to use this command!");
     const user = message.mentions.users.first();
     if (user) {
       const member = message.guild.member(user);
@@ -97,7 +97,7 @@ client.on("messageCreate", (message) => {
   }
   // ban a user
   else if (message.content.startsWith(`${prefix}ban`)) {
-    if (!message.member.hasPermission("BAN_MEMBERS")) return message.channel.send("You do not have permission to use this command!");
+    if (!message.member.permissions.has("BAN_MEMBERS")) return message.channel.send("You do not have permission to use this command!");
     const user = message.mentions.users.first();
     if (user) {
       const member = message.guild.member(user);
