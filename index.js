@@ -69,11 +69,10 @@ client.on("messageCreate", (message) => {
 				**${prefix}built** - differently!
 				**${prefix}avri** - chan!
 				**${prefix}help** - This help!
-			`
+		`
       )
-      .setFooter("Made by Avri#0001")
-      .setTimestamp();
-    message.channel.send(embed);
+      .setFooter("Made by Avri#1000");
+    message.channel.send({ embeds: [embed] });
   } else if (message.content.startsWith(`${prefix}kick`)) {
     if (!message.member.hasPermission("KICK_MEMBERS")) return message.channel.send("You do not have permission to use this command!");
     const user = message.mentions.users.first();
@@ -95,20 +94,31 @@ client.on("messageCreate", (message) => {
     } else {
       message.reply("You didn't mention the user to kick!");
     }
-  } else if (message.content.startsWith(`${prefix}ban`)) {
-    if (!message.member.hasPermission("BAN_MEMBERS")) return message.channel.send("You do not have permission to ban members!");
-    const member = message.mentions.members.first();
-    if (!member) return message.channel.send("You must mention a user to ban!");
-    if (member.id === message.author.id) return message.channel.send("You cannot ban yourself!");
-    if (!member.bannable) return message.channel.send("I cannot ban this user!");
-    member
-      .ban({ reason: "They were bad!" })
-      .then((member) => {
-        message.channel.send(`${member.user.tag} has been banned!`);
-      })
-      .catch((error) => {
-        message.channel.send(`An error occurred: ${error}`);
-      });
+  }
+  // ban a user
+  else if (message.content.startsWith(`${prefix}ban`)) {
+    if (!message.member.hasPermission("BAN_MEMBERS")) return message.channel.send("You do not have permission to use this command!");
+    const user = message.mentions.users.first();
+    if (user) {
+      const member = message.guild.member(user);
+      if (member) {
+        member
+          .ban({
+            reason: "They were bad!",
+          })
+          .then(() => {
+            message.reply(`Successfully banned ${user.tag}`);
+          })
+          .catch((err) => {
+            message.reply("I was unable to ban the member");
+            console.error(err);
+          });
+      } else {
+        message.reply("That user isn't in this guild!");
+      }
+    } else {
+      message.reply("You didn't mention the user to ban!");
+    }
   }
 });
 
