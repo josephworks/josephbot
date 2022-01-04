@@ -158,4 +158,4 @@ client.on('guildMemberAdd', async (member) => {
 	});
 });
 
-client.login(config.token);
+client.login(config.token).then(() => console.log(`Logged in as ${client.user.tag}`));
