@@ -79,7 +79,7 @@ client.on('messageCreate', (message) => {
 				**${prefix}help** - This help!
 		`,
 			)
-			.setFooter('Made by Avri#1000');
+			.setFooter({ text: 'Made by Avri#1000' });
 		message.channel.send({ embeds: [embed] });
 	}
 	else if (message.content.startsWith(`${prefix}kick`)) {
@@ -151,7 +151,7 @@ client.on('guildMemberAdd', async (member) => {
 			}),
 		)
 		.setTimestamp()
-		.setFooter('JosephWorks Discord Bot', 'https://i.imgur.com/wSTFkRM.png');
+		.setFooter({ text: 'JosephWorks Discord Bot', iconURL: 'https://i.imgur.com/wSTFkRM.png' });
 	if (!channel) return console.log('You do not have a channel called welcome, please make one or set the name of the channel in line 27 of the code.');
 	channel?.send({
 		embeds: [welcome],
