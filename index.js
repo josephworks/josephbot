@@ -10,7 +10,7 @@ const client = new Client({
 });
 
 // Replace the uri string with your MongoDB deployment's connection string.
-const uri = 'mongodb+srv://<user>:<password>@<cluster-url>?retryWrites=true&writeConcern=majority';
+const uri = 'mongodb://192.168.1.11?retryWrites=true&writeConcern=majority';
 
 // const dbclient = new MongoClient(uri);
 
