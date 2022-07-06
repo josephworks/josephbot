@@ -159,7 +159,7 @@ client.on('guildMemberUpdate', async (oldMember, newMember) => {
 });
 
 // save sent message to database
-client.on('message', async (message) => {
+client.on('messageCreate', async (message) => {
 	if (message.author.bot) return;
 	dbclient.connect(async (err, _dbclient) => {
 		if (err) throw err;
