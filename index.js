@@ -25,6 +25,21 @@ for (const file of commandFiles) {
 	client.commands.set(command.data.name, command);
 }
 
+// save all users to mongodb database
+dbclient.connect(async (err, _dbclient) => {
+	if (err) throw err;
+	const db = _dbclient.db('JosephBot');
+	const collection = db.collection('Users');
+	const users = await collection.find({}).toArray();
+	for (const user of users) {
+		const member = client.guilds.cache.get(user.guild).members.cache.get(user.user);
+		if (member) {
+			await collection.updateOne({ user: user.user, guild: user.guild }, { $set: { date: member.joinedAt } });
+		}
+	}
+	_dbclient.close();
+});
+
 client.on('interactionCreate', async interaction => {
 	console.log(`${interaction.user.tag} in #${interaction.channel.name} triggered an interaction.`);
 	if (!interaction.isCommand()) return;
@@ -104,21 +119,6 @@ client.on('guildMemberUpdate', async (oldMember, newMember) => {
 			_dbclient.close();
 		});
 	}
-});
-
-// save all users to mongodb database
-dbclient.connect(async (err, _dbclient) => {
-	if (err) throw err;
-	const db = _dbclient.db('JosephBot');
-	const collection = db.collection('Users');
-	const users = await collection.find({}).toArray();
-	for (const user of users) {
-		const member = client.guilds.cache.get(user.guild).members.cache.get(user.user);
-		if (member) {
-			await collection.updateOne({ user: user.user, guild: user.guild }, { $set: { date: member.joinedAt } });
-		}
-	}
-	_dbclient.close();
 });
 
 // save sent message to database
