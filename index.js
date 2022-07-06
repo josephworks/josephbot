@@ -25,19 +25,50 @@ for (const file of commandFiles) {
 	client.commands.set(command.data.name, command);
 }
 
-// save all users to mongodb database
-dbclient.connect(async (err, _dbclient) => {
-	if (err) throw err;
-	const db = _dbclient.db('JosephBot');
-	const collection = db.collection('Users');
-	const users = await collection.find({}).toArray();
-	for (const user of users) {
-		const member = client.guilds.cache.get(user.guild).members.cache.get(user.user);
-		if (member) {
-			await collection.updateOne({ user: user.user, guild: user.guild }, { $set: { date: member.joinedAt } });
-		}
-	}
-	_dbclient.close();
+// Save all guilds to database
+client.on('ready', () => {
+	dbclient.connect(err => {
+		if (err) throw err;
+		const db = dbclient.db('JosephBot');
+		const guilds = db.collection('Guilds');
+		const users = db.collection('Users');
+		client.guilds.cache.forEach(guild => {
+			guilds.insertOne({
+				_id: guild.id,
+				name: guild.name,
+				owner: guild.owner.id,
+				createdAt: guild.createdAt,
+				region: guild.region,
+				memberCount: guild.memberCount,
+				channels: guild.channels.cache.map(channel => ({
+					_id: channel.id,
+					name: channel.name,
+					type: channel.type,
+					createdAt: channel.createdAt,
+					parent: channel.parent ? channel.parent.id : null,
+					position: channel.position,
+					permissions: channel.permissions,
+					topic: channel.topic,
+					nsfw: channel.nsfw,
+					rateLimitPerUser: channel.rateLimitPerUser,
+					lastMessage: channel.lastMessage ? channel.lastMessage.id : null,
+				})),
+			});
+			guild.members.cache.forEach(member => {
+				users.insertOne({
+					_id: member.id,
+					username: member.user.username,
+					discriminator: member.user.discriminator,
+					avatar: member.user.avatar,
+					createdAt: member.user.createdAt,
+					// eslint-disable-next-line max-nested-callbacks
+					roles: member.roles.cache.map(role => role.id),
+					joinedAt: member.joinedAt,
+					guild: guild.id,
+				});
+			});
+		});
+	});
 });
 
 client.on('interactionCreate', async interaction => {
