@@ -121,6 +121,26 @@ dbclient.connect(async (err, _dbclient) => {
 	_dbclient.close();
 });
 
+// save sent message to database
+client.on('message', async (message) => {
+	if (message.author.bot) return;
+	dbclient.connect(async (err, _dbclient) => {
+		if (err) throw err;
+		const db = _dbclient.db('JosephBot');
+		const collection = db.collection('Messages');
+		const messageDocument = {
+			user: message.author.id,
+			guild: message.guild.id,
+			channel: message.channel.id,
+			content: message.content,
+			attachments: message.attachments,
+			date: message.createdAt,
+		};
+		await collection.insertOne(messageDocument);
+		_dbclient.close();
+	});
+});
+
 const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
 
 for (const file of eventFiles) {
