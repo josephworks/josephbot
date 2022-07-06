@@ -27,6 +27,8 @@ for (const file of commandFiles) {
 
 // Save all guilds to database
 client.on('ready', () => {
+	// begin timer
+	const start = new Date();
 	dbclient.connect(err => {
 		if (err) throw err;
 		const db = dbclient.db('JosephBot');
@@ -38,7 +40,6 @@ client.on('ready', () => {
 				name: guild.name,
 				owner: guild.ownerId,
 				createdAt: guild.createdAt,
-				region: guild.region,
 				memberCount: guild.memberCount,
 				channels: guild.channels.cache.map(channel => ({
 					_id: channel.id,
@@ -69,6 +70,11 @@ client.on('ready', () => {
 			});
 		});
 	});
+	// end timer
+	const end = new Date();
+	const timeDiff = end.getTime() - start.getTime();
+	const diff = new Date(timeDiff);
+	console.log(`Finished updating database in ${diff.getSeconds()} seconds.`);
 });
 
 client.on('interactionCreate', async interaction => {
