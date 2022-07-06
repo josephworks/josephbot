@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 const fs = require('node:fs');
 const { Client, Collection, MessageEmbed } = require('discord.js');
 const MongoClient = require('mongodb').MongoClient;
@@ -35,25 +34,57 @@ client.on('ready', () => {
 		const guilds = db.collection('Guilds');
 		const users = db.collection('Users');
 		client.guilds.cache.forEach(guild => {
-			guilds.insertOne({
-				_id: guild.id,
-				name: guild.name,
-				owner: guild.ownerId,
-				createdAt: guild.createdAt,
-				memberCount: guild.memberCount,
-				channels: guild.channels.cache.map(channel => ({
-					_id: channel.id,
-					name: channel.name,
-					type: channel.type,
-					createdAt: channel.createdAt,
-					parent: channel.parent ? channel.parent.id : null,
-					position: channel.position,
-					permissions: channel.permissions,
-					topic: channel.topic,
-					nsfw: channel.nsfw,
-					rateLimitPerUser: channel.rateLimitPerUser,
-					lastMessage: channel.lastMessage ? channel.lastMessage.id : null,
-				})),
+			// check if guild is in database
+			guilds.findOne({ id: guild.id }, (err, result) => {
+				if (err) throw err;
+				if (result) {
+					// guild is in database
+					// update guild
+					guilds.updateOne({
+						_id: guild.id,
+						name: guild.name,
+						owner: guild.ownerId,
+						createdAt: guild.createdAt,
+						memberCount: guild.memberCount,
+						channels: guild.channels.cache.map(channel => ({
+							_id: channel.id,
+							name: channel.name,
+							type: channel.type,
+							createdAt: channel.createdAt,
+							parent: channel.parent ? channel.parent.id : null,
+							position: channel.position,
+							permissions: channel.permissions,
+							topic: channel.topic,
+							nsfw: channel.nsfw,
+							rateLimitPerUser: channel.rateLimitPerUser,
+							lastMessage: channel.lastMessage ? channel.lastMessage.id : null,
+						})),
+					});
+				}
+				else {
+					// guild is not in database
+					// insert guild
+					guilds.insertOne({
+						_id: guild.id,
+						name: guild.name,
+						owner: guild.ownerId,
+						createdAt: guild.createdAt,
+						memberCount: guild.memberCount,
+						channels: guild.channels.cache.map(channel => ({
+							_id: channel.id,
+							name: channel.name,
+							type: channel.type,
+							createdAt: channel.createdAt,
+							parent: channel.parent ? channel.parent.id : null,
+							position: channel.position,
+							permissions: channel.permissions,
+							topic: channel.topic,
+							nsfw: channel.nsfw,
+							rateLimitPerUser: channel.rateLimitPerUser,
+							lastMessage: channel.lastMessage ? channel.lastMessage.id : null,
+						})),
+					});
+				}
 			});
 			guild.members.cache.forEach(member => {
 				users.insertOne({
@@ -62,7 +93,6 @@ client.on('ready', () => {
 					discriminator: member.user.discriminator,
 					avatar: member.user.avatar,
 					createdAt: member.user.createdAt,
-					// eslint-disable-next-line max-nested-callbacks
 					roles: member.roles.cache.map(role => role.id),
 					joinedAt: member.joinedAt,
 					guild: guild.id,
