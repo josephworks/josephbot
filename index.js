@@ -12,8 +12,7 @@ const client = new Client({
 
 // Replace the uri string with your MongoDB deployment's connection string.
 const uri = 'mongodb://192.168.1.11?retryWrites=true&writeConcern=majority';
-
-// const dbclient = new MongoClient(uri);
+const dbclient = new MongoClient(uri);
 
 client.commands = new Collection();
 
@@ -90,7 +89,36 @@ client.on('guildMemberUpdate', async (oldMember, newMember) => {
 		channel?.send({
 			embeds: [nitro],
 		});
+
+		// Add user to mongodb database
+		dbclient.connect(async (err, _dbclient) => {
+			if (err) throw err;
+			const db = _dbclient.db('JosephBot');
+			const collection = db.collection('NitroBoosters');
+			const user = {
+				user: newMember.user.id,
+				guild: newMember.guild.id,
+				date: new Date(),
+			};
+			await collection.insertOne(user);
+			_dbclient.close();
+		});
 	}
+});
+
+// save all users to mongodb database
+dbclient.connect(async (err, _dbclient) => {
+	if (err) throw err;
+	const db = _dbclient.db('JosephBot');
+	const collection = db.collection('Users');
+	const users = await collection.find({}).toArray();
+	for (const user of users) {
+		const member = client.guilds.cache.get(user.guild).members.cache.get(user.user);
+		if (member) {
+			await collection.updateOne({ user: user.user, guild: user.guild }, { $set: { date: member.joinedAt } });
+		}
+	}
+	_dbclient.close();
 });
 
 const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
