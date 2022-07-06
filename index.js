@@ -36,7 +36,7 @@ client.on('ready', () => {
 			guilds.insertOne({
 				_id: guild.id,
 				name: guild.name,
-				owner: guild.owner.id,
+				owner: guild.ownerId,
 				createdAt: guild.createdAt,
 				region: guild.region,
 				memberCount: guild.memberCount,
