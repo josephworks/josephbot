@@ -1,5 +1,5 @@
 const config = require('../config.json');
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 module.exports = {
 	name: 'messageCreate',
 	async execute(message, client) {
@@ -25,7 +25,7 @@ module.exports = {
 			message.channel.send('chan!');
 		}
 		else if (message.content.startsWith(`${prefix}help`)) {
-			const embed = new MessageEmbed()
+			const embed = new EmbedBuilder()
 				.setTitle('Help')
 				.setColor('#0099ff')
 				.setDescription(
