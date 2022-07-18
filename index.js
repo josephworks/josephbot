@@ -139,60 +139,6 @@ client.on('ready', () => {
 		const timeDiff = end.getTime() - start.getTime();
 		const diff = new Date(timeDiff);
 		console.log(`Finished updating database in ${diff.getSeconds()} seconds.`);
-
-		// setinterval hello world every five seconds
-		setInterval(() => {
-			// check rss feed
-			new Parser().parseURL('https://myanimelist.net/rss.php?type=rw&u=josephworks', function(err, josephAnimeList) {
-				if (err) throw err;
-
-				const animes = db.collection('JosephAnime');
-
-				// upload each anime in items to database
-				josephAnimeList.items.forEach(item => {
-					const animeId = crypto.createHash('md5').update(item.title + ' - ' + item.content).digest('hex');
-					// check if anime is in database
-					animes.findOne({ _id: animeId }, (err, result) => {
-						if (err) throw err;
-						if (result) {
-							// anime is in database
-							// update anime
-							animes.updateOne({ _id: animeId }, {
-								$set: {
-									title: item.title,
-									description: item.content,
-									link: item.link,
-									pubDate: item.pubDate,
-									guid: item.guid,
-								},
-							});
-						}
-						else {
-							// anime is not in database
-							// insert anime
-							animes.insertOne({
-								_id: animeId,
-								title: item.title,
-								description: item.content,
-								link: item.link,
-								pubDate: item.pubDate,
-								guid: item.guid,
-							});
-							const newPost = new EmbedBuilder()
-								.setTitle(item.title)
-								.setURL(item.link)
-								.setDescription(item.content)
-								.setColor(0x00bfff)
-								.setTimestamp()
-								.setFooter({ text: 'JosephWorks Discord Bot', iconURL: 'https://media.discordapp.net/stickers/979183132165148712.png' });
-							client.channels.cache.get('993667595293180014').send({
-								embeds: [newPost],
-							});
-						}
-					});
-				});
-			});
-		}, 5000);
 	});
 });
 
@@ -241,8 +187,8 @@ client.on('guildMemberUpdate', async (oldMember, newMember) => {
 	const guild = oldMember.guild;
 	// exclude channel search in all other guilds
 	const channel = guild.channels.cache.find((c) => c.name === 'welcome');
-	const hadRole = oldMember.roles.find(role => role.name === 'Nitro Booster');
-	const hasRole = newMember.roles.find(role => role.name === 'Nitro Booster');
+	const hadRole = oldMember.roles.has(guild.roles.find(role => role.name === 'Nitro Booster'));
+	const hasRole = newMember.roles.has(guild.roles.find(role => role.name === 'Nitro Booster'));
 	if (!hadRole && hasRole) {
 		const nitro = new EmbedBuilder()
 			.setTitle('New Nitro Boost!')
@@ -296,6 +242,64 @@ client.on('messageCreate', async (message) => {
 		_dbclient.close();
 	});
 });
+
+// setinterval hello world every five seconds
+setInterval(function() {
+	dbclient.connect(async (err, _dbclient) => {
+		if (err) throw err;
+		// check rss feed
+		new Parser().parseURL('https://myanimelist.net/rss.php?type=rw&u=josephworks', function(err, josephAnimeList) {
+			if (err) throw err;
+
+			const db = _dbclient.db('JosephBot');
+			const animes = db.collection('JosephAnime');
+
+			// upload each anime in items to database
+			josephAnimeList.items.forEach(item => {
+				const animeId = crypto.createHash('md5').update(item.title + ' - ' + item.content).digest('hex');
+				// check if anime is in database
+				animes.findOne({ _id: animeId }, (err, result) => {
+					if (err) throw err;
+					if (result) {
+						// anime is in database
+						// update anime
+						animes.updateOne({ _id: animeId }, {
+							$set: {
+								title: item.title,
+								description: item.content,
+								link: item.link,
+								pubDate: item.pubDate,
+								guid: item.guid,
+							},
+						});
+					}
+					else {
+						// anime is not in database
+						// insert anime
+						animes.insertOne({
+							_id: animeId,
+							title: item.title,
+							description: item.content,
+							link: item.link,
+							pubDate: item.pubDate,
+							guid: item.guid,
+						});
+						const newPost = new EmbedBuilder()
+							.setTitle(item.title)
+							.setURL(item.link)
+							.setDescription(item.content)
+							.setColor(0x00bfff)
+							.setTimestamp()
+							.setFooter({ text: 'JosephWorks Discord Bot', iconURL: 'https://media.discordapp.net/stickers/979183132165148712.png' });
+						client.channels.cache.get('993667595293180014').send({
+							embeds: [newPost],
+						});
+					}
+				});
+			});
+		});
+	});
+}, 5000);
 
 const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
 
