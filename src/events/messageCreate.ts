@@ -5,6 +5,7 @@ const config = require('../../config.json');
 export default (client: Client, dbclient: MongoClient): void => {
     client.on("messageCreate", async (message: Message): Promise<void> => {
         if (message.author.bot) return;
+        // save sent message to database
         dbclient.connect(async (err, _dbclient) => {
             if (err) throw err;
             const db = _dbclient!.db('JosephBot');

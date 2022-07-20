@@ -10,7 +10,7 @@ export default (client: Client, dbclient: MongoClient): void => {
         await client.application?.commands.set(Commands);
         dbclient.connect(err => {
             if (err) throw err;
-    
+
             // begin timer
             const start = new Date();
 
@@ -18,7 +18,7 @@ export default (client: Client, dbclient: MongoClient): void => {
                 _id: string;
                 [keys: string]: any
             }
-    
+
             const db = dbclient.db('JosephBot');
             const guilds = db.collection<DiscordDocument>('Guilds');
             const users = db.collection<DiscordDocument>('Users');
@@ -117,7 +117,7 @@ export default (client: Client, dbclient: MongoClient): void => {
                     });
                 });
             });
-    
+
             // end timer
             const end = new Date();
             const timeDiff = end.getTime() - start.getTime();
