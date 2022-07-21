@@ -7,8 +7,10 @@ export default (client: Client, dbclient: MongoClient): void => {
         const guild = oldMember.guild;
         // exclude channel search in all other guilds
         const channel = guild.channels.cache.find(c => c.name === 'welcome');
-        const hadRole = oldMember.roles.resolve((await guild.roles.fetch()).find(role => role.name.includes("Nitro Booster"))!);
-        const hasRole = newMember.roles.resolve((await guild.roles.fetch()).find(role => role.name.includes("Nitro Booster"))!);
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const hadRole = oldMember.roles.resolve((await guild.roles.fetch()).find(role => role.name.includes('Nitro Booster'))!);
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const hasRole = newMember.roles.resolve((await guild.roles.fetch()).find(role => role.name.includes('Nitro Booster'))!);
         if (!hadRole && hasRole) {
             const nitro = new EmbedBuilder()
                 .setTitle('New Nitro Boost!')
@@ -30,9 +32,9 @@ export default (client: Client, dbclient: MongoClient): void => {
             });
 
             // Add user to mongodb database
-            dbclient.connect(async (err, _dbclient) => {
+            dbclient.connect(async (err) => {
                 if (err) throw err;
-                const db = _dbclient!.db('JosephBot');
+                const db = dbclient.db('JosephBot');
                 const collection = db.collection('NitroBoosters');
                 const user = {
                     user: newMember.user.id,
@@ -40,7 +42,7 @@ export default (client: Client, dbclient: MongoClient): void => {
                     date: new Date(),
                 };
                 await collection.insertOne(user);
-                _dbclient!.close();
+                dbclient.close();
             });
         }
     });
