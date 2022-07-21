@@ -1,34 +1,39 @@
 {
-  "name": "josephbot",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "nodemon index.js",
-    "prod": "pm2 start index.js",
-    "start": "node .",
-    "lint": "eslint ."
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/josephworks/josephbot.git"
-  },
-  "author": "Joseph Robinson (JosephWorks)",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/josephworks/josephbot/issues"
-  },
-  "homepage": "https://github.com/josephworks/josephbot#readme",
-  "dependencies": {
-    "@discordjs/opus": "^0.8.0",
-    "@discordjs/rest": "^1.0.0",
-    "@discordjs/voice": "^0.11.0",
-    "discord-api-types": "^0.36.1",
-    "discord.js": "^14.0.1",
-    "mongodb": "^4.8.0",
-    "rss-parser": "^3.12.0"
-  },
-  "devDependencies": {
-    "eslint": "^8.20.0"
-  }
+    "name": "josephbot",
+    "version": "1.2.0",
+    "description": "",
+    "main": "src/Bot.ts",
+    "scripts": {
+        "prod": "pm2 start src/Bot.ts",
+        "start": "nodemon src/Bot.ts",
+        "lint": "eslint ."
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/josephworks/josephbot.git"
+    },
+    "author": "Joseph Robinson (JosephWorks)",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/josephworks/josephbot/issues"
+    },
+    "homepage": "https://github.com/josephworks/josephbot#readme",
+    "dependencies": {
+        "@discordjs/opus": "^0.8.0",
+        "@discordjs/rest": "^1.0.0",
+        "@discordjs/voice": "^0.11.0",
+        "discord-api-types": "^0.36.1",
+        "discord.js": "^14.0.1",
+        "mongodb": "^4.6.0",
+        "rss-parser": "^3.12.0"
+    },
+    "devDependencies": {
+        "@types/node": "^18.0.6",
+        "@typescript-eslint/eslint-plugin": "^5.30.7",
+        "eslint": "^8.20.0",
+        "eslint-plugin-import": "^2.26.0",
+        "eslint-plugin-unicorn": "^43.0.2",
+        "ts-node": "^10.9.1",
+        "typescript": "^4.7.4"
+    }
 }
