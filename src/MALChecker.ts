@@ -70,7 +70,7 @@ export default (client: Client, dbclient: MongoClient): void => {
                                             'https://media.discordapp.net/stickers/979183132165148712.png',
                                     });
                                 (
-                                    client.channels.cache.get('999612370064244779') as TextChannel
+                                    client.channels.cache.get('993667595293180014') as TextChannel
                                 ).send({
                                     embeds: [newPost],
                                 });
