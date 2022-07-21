@@ -1,6 +1,6 @@
-import { Client } from "discord.js";
+import { Client, Guild } from "discord.js";
 import { MongoClient } from "mongodb";
-import { Commands } from "src/Commands";
+import { Commands } from "../Commands";
 
 export default (client: Client, dbclient: MongoClient): void => {
     client.on("ready", async () => {
@@ -123,6 +123,11 @@ export default (client: Client, dbclient: MongoClient): void => {
             const timeDiff = end.getTime() - start.getTime();
             const diff = new Date(timeDiff);
             console.log(`Finished updating database in ${diff.getSeconds()} seconds.`);
+
+            // cache all in all guilds
+            client.guilds.cache.forEach(Guild => {
+                Guild.members.fetch()
+            });
         });
     });
 };

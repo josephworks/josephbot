@@ -1,10 +1,11 @@
+import { ApplicationCommandType } from "discord-api-types/v10";
 import { Client, CommandInteraction, Interaction } from "discord.js";
 import { Command } from "../Command";
 
 export const Ping: Command = {
     name: "ping",
     description: "Replies with Pong!",
-    type: "ChatInput",
+    type: ApplicationCommandType.ChatInput,
     run: async (client: Client, interaction: CommandInteraction) => {
         const content = "Pong!";
 

@@ -7,8 +7,8 @@ export default (client: Client, dbclient: MongoClient): void => {
         const guild = oldMember.guild;
         // exclude channel search in all other guilds
         const channel = guild.channels.cache.find((c) => c.name === 'welcome');
-        const hadRole = oldMember.roles.resolve(guild.roles.fetch(role => role.name === 'Nitro Booster'));
-        const hasRole = newMember.roles.resolve(guild.roles.fetch(role => role.name === 'Nitro Booster'));
+        const hadRole = oldMember.roles.resolve(guild.roles.cache.get("Nitro Booster")!);
+        const hasRole = newMember.roles.resolve(guild.roles.cache.get("Nitro Booster")!);
         if (!hadRole && hasRole) {
             const nitro = new EmbedBuilder()
                 .setTitle('New Nitro Boost!')

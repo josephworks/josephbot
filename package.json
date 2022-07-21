@@ -1,10 +1,10 @@
 {
   "name": "josephbot",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/Bot.ts",
   "scripts": {
-    "prod": "pm2 start index.js",
+    "prod": "pm2 start src/Bot.ts",
     "start": "nodemon src/Bot.ts",
     "lint": "eslint ."
   },
