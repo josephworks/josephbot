@@ -24,8 +24,7 @@ const client = new Client({
 });
 
 // Replace the uri string with your MongoDB deployment's connection string.
-const uri = config.dburi;
-const dbclient = new MongoClient(uri);
+const dbclient = new MongoClient(config.dburi);
 
 ready(client, dbclient);
 interactionCreate(client);

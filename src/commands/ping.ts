@@ -1,5 +1,5 @@
 import { ApplicationCommandType } from 'discord-api-types/v10';
-import { Client, CommandInteraction, Interaction } from 'discord.js';
+import { Client, CommandInteraction } from 'discord.js';
 import { Command } from '../Command';
 
 export const Ping: Command = {

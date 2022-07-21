@@ -1,7 +1,7 @@
+import * as crypto from 'node:crypto';
 import { Client, EmbedBuilder, TextChannel } from 'discord.js';
 import { MongoClient } from 'mongodb';
 import Parser from 'rss-parser';
-import * as crypto from 'crypto';
 
 export default (client: Client, dbclient: MongoClient): void => {
     // setinterval hello world every five seconds
@@ -11,7 +11,7 @@ export default (client: Client, dbclient: MongoClient): void => {
             // check rss feed
             new Parser().parseURL(
                 'https://myanimelist.net/rss.php?type=rw&u=josephworks',
-                function (err, josephAnimeList) {
+                function (err: any, josephAnimeList: Parser.Output<{ [key: string]: any }>) {
                     if (err) throw err;
 
                     interface AnimeDocument {
@@ -26,6 +26,7 @@ export default (client: Client, dbclient: MongoClient): void => {
                     josephAnimeList.items.forEach(item => {
                         const animeId = crypto
                             .createHash('md5')
+                            // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
                             .update(item.title + ' - ' + item.content)
                             .digest('hex');
                         // check if anime is in database
@@ -58,9 +59,9 @@ export default (client: Client, dbclient: MongoClient): void => {
                                     guid: item.guid,
                                 });
                                 const newPost = new EmbedBuilder()
-                                    .setTitle(item.title!)
-                                    .setURL(item.link!)
-                                    .setDescription(item.content!)
+                                    .setTitle(item.title ?? '')
+                                    .setURL(item.link ?? '')
+                                    .setDescription(item.content ?? '')
                                     .setColor(0x00bfff)
                                     .setTimestamp()
                                     .setFooter({
@@ -69,7 +70,7 @@ export default (client: Client, dbclient: MongoClient): void => {
                                             'https://media.discordapp.net/stickers/979183132165148712.png',
                                     });
                                 (
-                                    client.channels.cache.get('993667595293180014')! as TextChannel
+                                    client.channels.cache.get('993667595293180014') as TextChannel
                                 ).send({
                                     embeds: [newPost],
                                 });
