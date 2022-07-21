@@ -1,12 +1,13 @@
-const config = require('../config.json');
 import { Client, Partials } from 'discord.js';
 import { MongoClient } from 'mongodb';
-import ready from './events/ready';
-import messageCreate from './events/messageCreate';
-import interactionCreate from './events/interactionCreate';
 import guildMemberAdd from './events/guildMemberAdd';
 import guildMemberUpdate from './events/guildMemberUpdate';
+import interactionCreate from './events/interactionCreate';
+import messageCreate from './events/messageCreate';
+import ready from './events/ready';
 import MALChecker from './MALChecker';
+
+const config = require('../config.json');
 
 const client = new Client({
     // All intents are enabled by default.
@@ -33,4 +34,4 @@ guildMemberUpdate(client, dbclient);
 messageCreate(client, dbclient);
 MALChecker(client, dbclient);
 
-client.login(config.token).then(() => console.log(`Logged in as ${client.user!.tag}`));
+client.login(config.token).then(() => console.log(`Logged in as ${client.user?.tag}`));

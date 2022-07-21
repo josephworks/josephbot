@@ -1,4 +1,4 @@
-import { Client, Guild } from 'discord.js';
+import { Client } from 'discord.js';
 import { MongoClient } from 'mongodb';
 import { Commands } from '../Commands';
 
@@ -7,7 +7,9 @@ export default (client: Client, dbclient: MongoClient): void => {
         if (!client.user || !client.application) {
             return;
         }
-        await client.application?.commands.set(Commands);
+
+        await client.application.commands.set(Commands);
+
         dbclient.connect(err => {
             if (err) throw err;
 
@@ -123,10 +125,8 @@ export default (client: Client, dbclient: MongoClient): void => {
             });
 
             // end timer
-            const end = new Date();
-            const timeDiff = end.getTime() - start.getTime();
-            const diff = new Date(timeDiff);
-            console.log(`Finished updating database in ${diff.getSeconds()} seconds.`);
+            const diff = new Date().getTime() - start.getTime();
+            console.log(`Finished updating database in ${diff} milliseconds.`);
 
             // cache all in all guilds
             client.guilds.cache.forEach(Guild => {

@@ -51,7 +51,6 @@
                 "propertyDeclaration": true
             }
         ],
-        "import/extensions": ["error", "ignorePackages"],
         "import/no-extraneous-dependencies": "error",
         "import/no-unresolved": "off",
         "import/no-useless-path-segments": "error",
@@ -61,12 +60,7 @@
                 "alphabetize": {
                     "caseInsensitive": true,
                     "order": "asc"
-                },
-                "groups": [
-                    ["builtin", "external", "object", "type"],
-                    ["internal", "parent", "sibling", "index"]
-                ],
-                "newlines-between": "always"
+                }
             }
         ],
         "no-return-await": "off",
