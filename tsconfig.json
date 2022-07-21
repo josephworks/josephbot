@@ -16,20 +16,11 @@
         "forceConsistentCasingInFileNames": true,
         "removeComments": true,
         "noImplicitAny": false,
-        "typeRoots": [
-            "node_modules/@types"
-        ],
+        "typeRoots": ["node_modules/@types"],
         "sourceMap": false,
         "baseUrl": "./"
     },
-    "files": [
-        "src/Bot.ts"
-    ],
-    "include": [
-        "./**/*.ts"
-    ],
-    "exclude": [
-        "node_modules",
-        "dist"
-    ],
+    "files": ["src/Bot.ts"],
+    "include": ["./**/*.ts"],
+    "exclude": ["node_modules", "dist"]
 }

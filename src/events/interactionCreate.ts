@@ -1,9 +1,12 @@
-import { InteractionType } from "discord-api-types/v10";
-import { Client, Interaction } from "discord.js";
+import { InteractionType } from 'discord-api-types/v10';
+import { Client, Interaction } from 'discord.js';
 
 export default (client: Client): void => {
-    client.on("interactionCreate", async (interaction: Interaction) => {
-        if (interaction.type === InteractionType.ApplicationCommand || interaction.type === InteractionType.ModalSubmit) {
+    client.on('interactionCreate', async (interaction: Interaction) => {
+        if (
+            interaction.type === InteractionType.ApplicationCommand ||
+            interaction.type === InteractionType.ModalSubmit
+        ) {
             await handleSlashCommand(client, interaction);
         }
     });

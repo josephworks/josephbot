@@ -1,9 +1,9 @@
-import { Client, EmbedBuilder, Message } from "discord.js";
-import { MongoClient } from "mongodb";
+import { Client, EmbedBuilder, Message } from 'discord.js';
+import { MongoClient } from 'mongodb';
 const config = require('../../config.json');
 
 export default (client: Client, dbclient: MongoClient): void => {
-    client.on("messageCreate", async (message: Message): Promise<void> => {
+    client.on('messageCreate', async (message: Message): Promise<void> => {
         if (message.author.bot) return;
         // save sent message to database
         dbclient.connect(async (err, _dbclient) => {
@@ -26,21 +26,18 @@ export default (client: Client, dbclient: MongoClient): void => {
         if (!message.content.startsWith(prefix) || message.author.bot) return;
 
         if (message.content.startsWith(`${prefix}ping`)) {
-            message.reply(`The client websocket latency is **${client.ws.ping}ms** (values in milliseconds)`);
-        }
-        else if (message.content.startsWith(`${prefix}foo`)) {
+            message.reply(
+                `The client websocket latency is **${client.ws.ping}ms** (values in milliseconds)`
+            );
+        } else if (message.content.startsWith(`${prefix}foo`)) {
             message.channel.send('bar!');
-        }
-        else if (message.content.startsWith(`${prefix}anime`)) {
+        } else if (message.content.startsWith(`${prefix}anime`)) {
             message.channel.send('halal!');
-        }
-        else if (message.content.startsWith(`${prefix}built`)) {
+        } else if (message.content.startsWith(`${prefix}built`)) {
             message.channel.send('differently!');
-        }
-        else if (message.content.startsWith(`${prefix}avri`)) {
+        } else if (message.content.startsWith(`${prefix}avri`)) {
             message.channel.send('chan!');
-        }
-        else if (message.content.startsWith(`${prefix}help`)) {
+        } else if (message.content.startsWith(`${prefix}help`)) {
             const embed = new EmbedBuilder()
                 .setTitle('Help')
                 .setColor('#0099ff')
@@ -53,12 +50,11 @@ export default (client: Client, dbclient: MongoClient): void => {
 				**${prefix}built** - differently!
 				**${prefix}avri** - chan!
 				**${prefix}help** - This help!
-		`,
+		`
                 )
                 .setFooter({ text: 'Made by Avri#1000' });
             message.channel.send({ embeds: [embed] });
-        }
-        else if (message.content.startsWith(`${prefix}kick`)) {
+        } else if (message.content.startsWith(`${prefix}kick`)) {
             if (!message.member!.permissions.has('KickMembers')) {
                 message.channel.send('You do not have permission to use this command!');
                 return;
@@ -72,22 +68,20 @@ export default (client: Client, dbclient: MongoClient): void => {
                         .then(() => {
                             message.reply(`Successfully kicked ${user.tag}`);
                         })
-                        .catch((err) => {
+                        .catch(err => {
                             message.reply('I was unable to kick the member');
                             console.error(err);
                         });
+                } else {
+                    message.reply("That user isn't in this guild!");
                 }
-                else {
-                    message.reply('That user isn\'t in this guild!');
-                }
-            }
-            else {
-                message.reply('You didn\'t mention the user to kick!');
+            } else {
+                message.reply("You didn't mention the user to kick!");
             }
         }
         // ban a user
         else if (message.content.startsWith(`${prefix}ban`)) {
-            if (!message.member!.permissions.has("BanMembers")) {
+            if (!message.member!.permissions.has('BanMembers')) {
                 message.channel.send('You do not have permission to use this command!');
                 return;
             }
@@ -102,17 +96,15 @@ export default (client: Client, dbclient: MongoClient): void => {
                         .then(() => {
                             message.reply(`Successfully banned ${user.tag}`);
                         })
-                        .catch((err) => {
+                        .catch(err => {
                             message.reply('I was unable to ban the member');
                             console.error(err);
                         });
+                } else {
+                    message.reply("That user isn't in this guild!");
                 }
-                else {
-                    message.reply('That user isn\'t in this guild!');
-                }
-            }
-            else {
-                message.reply('You didn\'t mention the user to ban!');
+            } else {
+                message.reply("You didn't mention the user to ban!");
             }
         }
     });

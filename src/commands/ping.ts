@@ -1,17 +1,17 @@
-import { ApplicationCommandType } from "discord-api-types/v10";
-import { Client, CommandInteraction, Interaction } from "discord.js";
-import { Command } from "../Command";
+import { ApplicationCommandType } from 'discord-api-types/v10';
+import { Client, CommandInteraction, Interaction } from 'discord.js';
+import { Command } from '../Command';
 
 export const Ping: Command = {
-    name: "ping",
-    description: "Replies with Pong!",
+    name: 'ping',
+    description: 'Replies with Pong!',
     type: ApplicationCommandType.ChatInput,
     run: async (client: Client, interaction: CommandInteraction) => {
-        const content = "Pong!";
+        const content = 'Pong!';
 
         await interaction.followUp({
             ephemeral: true,
-            content
+            content,
         });
-    }
+    },
 };

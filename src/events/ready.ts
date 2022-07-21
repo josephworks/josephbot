@@ -1,9 +1,9 @@
-import { Client, Guild } from "discord.js";
-import { MongoClient } from "mongodb";
-import { Commands } from "../Commands";
+import { Client, Guild } from 'discord.js';
+import { MongoClient } from 'mongodb';
+import { Commands } from '../Commands';
 
 export default (client: Client, dbclient: MongoClient): void => {
-    client.on("ready", async () => {
+    client.on('ready', async () => {
         if (!client.user || !client.application) {
             return;
         }
@@ -16,7 +16,7 @@ export default (client: Client, dbclient: MongoClient): void => {
 
             interface DiscordDocument {
                 _id: string;
-                [keys: string]: any
+                [keys: string]: any;
             }
 
             const db = dbclient.db('JosephBot');
@@ -29,29 +29,31 @@ export default (client: Client, dbclient: MongoClient): void => {
                     if (result) {
                         // guild is in database
                         // update guild
-                        guilds.updateOne({ _id: guild.id }, {
-                            $set: {
-                                name: guild.name,
-                                owner: guild.ownerId,
-                                createdAt: guild.createdAt,
-                                memberCount: guild.memberCount,
-                                channels: guild.channels.cache.map(channel => ({
-                                    _id: channel.id,
-                                    name: channel.name,
-                                    type: channel.type,
-                                    createdAt: channel.createdAt,
-                                    parent: channel.parent ? channel.parent.id : null,
-                                    /*position: channel.position,
+                        guilds.updateOne(
+                            { _id: guild.id },
+                            {
+                                $set: {
+                                    name: guild.name,
+                                    owner: guild.ownerId,
+                                    createdAt: guild.createdAt,
+                                    memberCount: guild.memberCount,
+                                    channels: guild.channels.cache.map(channel => ({
+                                        _id: channel.id,
+                                        name: channel.name,
+                                        type: channel.type,
+                                        createdAt: channel.createdAt,
+                                        parent: channel.parent ? channel.parent.id : null,
+                                        /*position: channel.position,
                                     permissions: channel.permissions,
                                     topic: channel.topic,
                                     nsfw: channel.nsfw,
                                     rateLimitPerUser: channel.rateLimitPerUser,
                                     lastMessage: channel.lastMessage ? channel.lastMessage.id : null,*/
-                                })),
-                            },
-                        });
-                    }
-                    else {
+                                    })),
+                                },
+                            }
+                        );
+                    } else {
                         // guild is not in database
                         // insert guild
                         guilds.insertOne({
@@ -83,24 +85,26 @@ export default (client: Client, dbclient: MongoClient): void => {
                         if (result) {
                             // user is in database
                             // update user
-                            users.updateOne({ _id: member.id }, {
-                                $set: {
-                                    name: member.user.username,
-                                    discriminator: member.user.discriminator,
-                                    avatar: member.user.avatar,
-                                    createdAt: member.user.createdAt,
-                                    roles: member.roles.cache.map(role => role.id),
-                                    joinedAt: member.joinedAt,
-                                    premium: member.premiumSince,
-                                    bot: member.user.bot,
-                                    /*status: member.status,
+                            users.updateOne(
+                                { _id: member.id },
+                                {
+                                    $set: {
+                                        name: member.user.username,
+                                        discriminator: member.user.discriminator,
+                                        avatar: member.user.avatar,
+                                        createdAt: member.user.createdAt,
+                                        roles: member.roles.cache.map(role => role.id),
+                                        joinedAt: member.joinedAt,
+                                        premium: member.premiumSince,
+                                        bot: member.user.bot,
+                                        /*status: member.status,
                                     game: member.game ? member.game.name : null,
                                     nickname: member.nickname,
                                     lastMessage: member.lastMessage ? member.lastMessage.id : null,*/
-                                },
-                            });
-                        }
-                        else {
+                                    },
+                                }
+                            );
+                        } else {
                             // user is not in database
                             // insert user
                             users.insertOne({
@@ -126,7 +130,7 @@ export default (client: Client, dbclient: MongoClient): void => {
 
             // cache all in all guilds
             client.guilds.cache.forEach(Guild => {
-                Guild.members.fetch()
+                Guild.members.fetch();
             });
         });
     });
