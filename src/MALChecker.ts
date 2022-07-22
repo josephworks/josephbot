@@ -13,7 +13,6 @@ export default (client: Client, dbclient: MongoClient): void => {
                 'https://myanimelist.net/rss.php?type=rw&u=josephworks',
                 function (err: any, josephAnimeList: Parser.Output<{ [key: string]: any }>) {
                     if (err) throw err;
-
                     interface AnimeDocument {
                         _id: string;
                         [keys: string]: any;
