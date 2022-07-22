@@ -8,9 +8,13 @@ export default (client: Client, dbclient: MongoClient): void => {
         // exclude channel search in all other guilds
         const channel = guild.channels.cache.find(c => c.name === 'welcome');
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const hadRole = oldMember.roles.resolve((await guild.roles.fetch()).find(role => role.name.includes('Nitro Booster'))!);
+        const hadRole = oldMember.roles.resolve(
+            (await guild.roles.fetch()).find(role => role.name.includes('Nitro Booster'))!
+        );
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const hasRole = newMember.roles.resolve((await guild.roles.fetch()).find(role => role.name.includes('Nitro Booster'))!);
+        const hasRole = newMember.roles.resolve(
+            (await guild.roles.fetch()).find(role => role.name.includes('Nitro Booster'))!
+        );
         if (!hadRole && hasRole) {
             const nitro = new EmbedBuilder()
                 .setTitle('New Nitro Boost!')
@@ -32,7 +36,7 @@ export default (client: Client, dbclient: MongoClient): void => {
             });
 
             // Add user to mongodb database
-            dbclient.connect(async (err) => {
+            dbclient.connect(async err => {
                 if (err) throw err;
                 const db = dbclient.db('JosephBot');
                 const collection = db.collection('NitroBoosters');
