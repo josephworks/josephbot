@@ -8,12 +8,11 @@ export const Tater: Command = {
     type: ApplicationCommandType.ChatInput,
     run: async (client: Client, interaction: CommandInteraction) => {
         const taterEmbed = new EmbedBuilder()
-            .setTitle('Tater')
-            .setDescription('A tater is a tater.')
-            .setImage('https://i.imgur.com/XqQZQ.png')
+            .setTitle('taterpal')
+            .setDescription('taterpal is a bot that can be used to interact with the Discord API.')
             .setColor('#ff0000')
             .setFooter({
-                text: 'Tater is a tater.'
+                text: 'tater is a lovely lady :3.'
             });
 
         await interaction.followUp({
