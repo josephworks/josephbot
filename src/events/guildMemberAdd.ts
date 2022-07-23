@@ -9,7 +9,7 @@ export default (client: Client): void => {
         const welcome = new EmbedBuilder()
             .setTitle('New User Has Joined!')
             .setDescription(
-                `Welcome To Our Server ${member.user}! We are happy to have you in this server! You are member number ${guild.memberCount} btw!`
+                `Welcome To Our Server ${member.user}! We are happy to have you in this server! You are member number ${guild.memberCount} btw!`,
             )
             .setColor('#2F3136')
             .setThumbnail(member.displayAvatarURL())
@@ -20,7 +20,7 @@ export default (client: Client): void => {
             });
         if (!channel)
             return console.log(
-                'You do not have a channel called welcome, please make one or set the name of the channel in line 27 of the code.'
+                'You do not have a channel called welcome, please make one or set the name of the channel in line 27 of the code.',
             );
         (channel as TextChannel)?.send({
             embeds: [welcome],

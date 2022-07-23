@@ -5,7 +5,7 @@ import Parser from 'rss-parser';
 
 export default (client: Client, dbclient: MongoClient): void => {
     // setinterval hello world every five seconds
-    setInterval(function () {
+    setInterval(function() {
         dbclient.connect(async err => {
             if (err) throw err;
             // check rss feed
@@ -46,7 +46,7 @@ export default (client: Client, dbclient: MongoClient): void => {
                                             pubDate: item.pubDate,
                                             guid: item.guid,
                                         },
-                                    }
+                                    },
                                 );
                             } else {
                                 // anime is not in database
@@ -78,7 +78,7 @@ export default (client: Client, dbclient: MongoClient): void => {
                             }
                         });
                     });
-                }
+                },
             );
         });
     }, 5000);

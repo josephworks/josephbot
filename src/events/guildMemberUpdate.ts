@@ -9,11 +9,11 @@ export default (client: Client, dbclient: MongoClient): void => {
         const channel = guild.channels.cache.find(c => c.name === 'welcome');
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const hadRole = oldMember.roles.resolve(
-            (await guild.roles.fetch()).find(role => role.name.includes('Nitro Booster'))!
+            (await guild.roles.fetch()).find(role => role.name.includes('Nitro Booster'))!,
         );
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const hasRole = newMember.roles.resolve(
-            (await guild.roles.fetch()).find(role => role.name.includes('Nitro Booster'))!
+            (await guild.roles.fetch()).find(role => role.name.includes('Nitro Booster'))!,
         );
         if (!hadRole && hasRole) {
             const nitro = new EmbedBuilder()
@@ -29,7 +29,7 @@ export default (client: Client, dbclient: MongoClient): void => {
                 });
             if (!channel)
                 return console.log(
-                    'You do not have a channel called welcome, please make one or set the name of the channel in line 27 of the code.'
+                    'You do not have a channel called welcome, please make one or set the name of the channel in line 27 of the code.',
                 );
             (channel as TextChannel)?.send({
                 embeds: [nitro],

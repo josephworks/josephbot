@@ -18,6 +18,7 @@ export default (client: Client, dbclient: MongoClient): void => {
 
             interface DiscordDocument {
                 _id: string;
+
                 [keys: string]: any;
             }
 
@@ -53,7 +54,7 @@ export default (client: Client, dbclient: MongoClient): void => {
                                     lastMessage: channel.lastMessage ? channel.lastMessage.id : null,*/
                                     })),
                                 },
-                            }
+                            },
                         );
                     } else {
                         // guild is not in database
@@ -104,7 +105,7 @@ export default (client: Client, dbclient: MongoClient): void => {
                                     nickname: member.nickname,
                                     lastMessage: member.lastMessage ? member.lastMessage.id : null,*/
                                     },
-                                }
+                                },
                             );
                         } else {
                             // user is not in database

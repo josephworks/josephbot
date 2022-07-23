@@ -12,12 +12,12 @@ export const Tater: Command = {
             .setDescription('taterpal is a bot that can be used to interact with the Discord API.')
             .setColor('#ff0000')
             .setFooter({
-                text: 'tater is a lovely lady :3.'
+                text: 'tater is a lovely lady :3.',
             });
 
         await interaction.followUp({
             ephemeral: true,
-            embeds: [taterEmbed]
+            embeds: [taterEmbed],
         });
     },
 };
