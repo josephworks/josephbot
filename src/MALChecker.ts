@@ -9,12 +9,14 @@ export default (client: Client, dbclient: MongoClient): void => {
         dbclient.connect(async err => {
             if (err) throw err;
             // check rss feed
-            new Parser().parseURL(
+            await new Parser().parseURL(
                 'https://myanimelist.net/rss.php?type=rw&u=josephworks',
-                function (err: any, josephAnimeList: Parser.Output<{ [key: string]: any }>) {
+                function(err: any, josephAnimeList: Parser.Output<{ [key: string]: any }>) {
                     if (err) throw err;
+
                     interface AnimeDocument {
                         _id: string;
+
                         [keys: string]: any;
                     }
 

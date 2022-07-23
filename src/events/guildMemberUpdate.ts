@@ -46,7 +46,7 @@ export default (client: Client, dbclient: MongoClient): void => {
                     date: new Date(),
                 };
                 await collection.insertOne(user);
-                dbclient.close();
+                await dbclient.close();
             });
         }
     });

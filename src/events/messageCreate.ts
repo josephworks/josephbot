@@ -18,7 +18,7 @@ export default (client: Client, dbclient: MongoClient): void => {
                 date: message.createdAt,
             };
             await collection.insertOne(messageDocument);
-            dbclient.close();
+            await dbclient.close();
         });
     });
 };
