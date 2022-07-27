@@ -5,18 +5,17 @@ import Parser from 'rss-parser';
 
 export default (client: Client, dbclient: MongoClient): void => {
     // setinterval hello world every five seconds
-    setInterval(function() {
+    setInterval(function () {
         dbclient.connect(async err => {
             if (err) throw err;
             // check rss feed
             await new Parser().parseURL(
                 'https://myanimelist.net/rss.php?type=rw&u=josephworks',
-                function(err: any, josephAnimeList: Parser.Output<{ [key: string]: any }>) {
+                function (err: any, josephAnimeList: Parser.Output<{ [key: string]: any }>) {
                     if (err) throw err;
 
                     interface AnimeDocument {
                         _id: string;
-
                         [keys: string]: any;
                     }
 
@@ -46,7 +45,7 @@ export default (client: Client, dbclient: MongoClient): void => {
                                             pubDate: item.pubDate,
                                             guid: item.guid,
                                         },
-                                    },
+                                    }
                                 );
                             } else {
                                 // anime is not in database
@@ -78,7 +77,7 @@ export default (client: Client, dbclient: MongoClient): void => {
                             }
                         });
                     });
-                },
+                }
             );
         });
     }, 5000);
