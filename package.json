@@ -20,17 +20,17 @@
     "homepage": "https://github.com/josephworks/josephbot#readme",
     "dependencies": {
         "@discordjs/opus": "^0.8.0",
-        "@discordjs/rest": "^1.0.0",
+        "@discordjs/rest": "^1.0.1",
         "@discordjs/voice": "^0.11.0",
         "discord-api-types": "^0.36.3",
-        "discord.js": "^14.0.3",
-        "mongodb": "^4.8.0",
+        "discord.js": "^14.1.2",
+        "mongodb": "^4.8.1",
         "rss-parser": "^3.12.0"
     },
     "devDependencies": {
-        "@types/node": "^18.6.1",
+        "@types/node": "^18.6.3",
         "@typescript-eslint/eslint-plugin": "^5.31.0",
-        "eslint": "^8.20.0",
+        "eslint": "^8.21.0",
         "eslint-plugin-import": "^2.26.0",
         "eslint-plugin-unicorn": "^43.0.2",
         "prettier": "^2.7.1",
