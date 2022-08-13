@@ -3,6 +3,9 @@ import { Client, EmbedBuilder, GuildMember, TextChannel } from 'discord.js';
 export default (client: Client): void => {
     /* Client when detects a new member join */
     client.on('guildMemberAdd', async (member: GuildMember): Promise<void> => {
+        if (member.id === '962876356679589920') { //anti-mohameme precautions
+            member.voice.setMute(true);
+        }
         const guild = member.guild;
         // exclude channel search in all other guilds
         const channel = guild.channels.cache.find(c => c.name === 'welcome');

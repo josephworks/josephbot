@@ -1,4 +1,4 @@
-import { Client, Partials } from 'discord.js';
+import { Client, Partials, VoiceState } from 'discord.js';
 import { MongoClient } from 'mongodb';
 import guildMemberAdd from './events/guildMemberAdd';
 import guildMemberUpdate from './events/guildMemberUpdate';
@@ -32,5 +32,13 @@ guildMemberAdd(client);
 guildMemberUpdate(client, dbclient);
 messageCreate(client, dbclient);
 MALChecker(client, dbclient);
+
+//anti-mohameme precautions
+client.on('voiceStateUpdate', async (oldmem: VoiceState, newmem: VoiceState) => {
+    console.log(`abc`);
+    if (newmem.member?.id === '962876356679589920' && !newmem.member.voice.serverMute ) {
+        newmem.member.voice.setMute(true);
+    }
+});
 
 client.login(config.token).then(() => console.log(`Logged in as ${client.user?.tag}`));
