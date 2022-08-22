@@ -42,7 +42,7 @@ export default (client: Client, dbclient: MongoClient): void => {
                                             title: item.title,
                                             description: item.content,
                                             link: item.link,
-                                            pubDate: item.pubDate,
+                                            pubDate: new Date(item.pubDate ?? ''),
                                             guid: item.guid,
                                         },
                                     }
@@ -55,7 +55,7 @@ export default (client: Client, dbclient: MongoClient): void => {
                                     title: item.title,
                                     description: item.content,
                                     link: item.link,
-                                    pubDate: item.pubDate,
+                                    pubDate: new Date(item.pubDate ?? ''),
                                     guid: item.guid,
                                 });
                                 const newPost = new EmbedBuilder()
