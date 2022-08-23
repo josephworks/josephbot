@@ -7,12 +7,12 @@ export default (client: Client, dbclient: MongoClient): void => {
         const guild = oldMember.guild;
         // exclude channel search in all other guilds
         const channel = guild.channels.cache.find(c => c.name === 'welcome');
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const hadRole = oldMember.roles.resolve(
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             (await guild.roles.fetch()).find(role => role.name.includes('Nitro Booster'))!,
         );
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const hasRole = newMember.roles.resolve(
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             (await guild.roles.fetch()).find(role => role.name.includes('Nitro Booster'))!,
         );
         if (!hadRole && hasRole) {
