@@ -5,7 +5,7 @@ export default (client: Client, dbclient: MongoClient): void => {
     client.on('messageCreate', async (message: Message) => {
         if (message.author.bot) return
         // save sent message to database
-        dbclient.connect(async err => {
+        dbclient.connect(async (err: any) => {
             if (err) throw err
             const db = dbclient.db('JosephBot')
             const collection = db.collection('Messages')
