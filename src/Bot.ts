@@ -1,4 +1,4 @@
-import { Client, Partials, VoiceState } from 'discord.js'
+import { Client, VoiceState, Intents } from 'discord.js'
 import { MongoClient } from 'mongodb'
 import guildMemberAdd from './events/guildMemberAdd'
 import guildMemberUpdate from './events/guildMemberUpdate'
@@ -12,7 +12,7 @@ const config = require('../config.json')
 
 const client = new Client({
     // All intents are enabled by default.
-    intents: [1 | 2 | 4 | 8 | 16 | 32 | 64 | 128 | 256 | 512 | 1024 | 2048 | 4096 | 8192 | 16384 | 32768 | 65536],
+    intents: new Intents(131071),
 })
 
 // Replace the uri string with your MongoDB deployment's connection string.
