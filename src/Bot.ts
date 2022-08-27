@@ -31,7 +31,6 @@ setInterval(function () {
 
 //anti-mohameme precautions
 client.on('voiceStateUpdate', async (oldmem: VoiceState, newmem: VoiceState) => {
-    console.log(`abc`)
     if (newmem.member?.id === '962876356679589920' && !newmem.member.voice.serverMute) {
         newmem.member.voice.setMute(true)
     }

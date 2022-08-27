@@ -17,6 +17,7 @@ export default (client: Client, dbclient: MongoClient): void => {
                 attachments: message.attachments,
                 date: message.createdAt
             }
+            console.log(message)
             await collection.insertOne(messageDocument)
             await dbclient.close()
         })
