@@ -22,16 +22,16 @@
         "@discordjs/opus": "^0.8.0",
         "@discordjs/rest": "^1.1.0",
         "@discordjs/voice": "^0.11.0",
-        "discord-api-types": "^0.37.5",
+        "discord-api-types": "^0.37.8",
         "discord.js": "^14.3.0",
-        "mongodb": "^4.9.0",
+        "mongodb": "^4.9.1",
         "rss-parser": "^3.12.0"
     },
     "devDependencies": {
-        "@types/node": "^18.7.13",
-        "@typescript-eslint/eslint-plugin": "^5.35.1",
-        "@typescript-eslint/parser": "^5.35.1",
-        "eslint": "^8.23.0",
+        "@types/node": "^18.7.16",
+        "@typescript-eslint/eslint-plugin": "^5.36.2",
+        "@typescript-eslint/parser": "^5.36.2",
+        "eslint": "^8.23.1",
         "eslint-config-standard": "^17.0.0",
         "eslint-plugin-import": "^2.26.0",
         "eslint-plugin-n": "^15.2.5",
@@ -39,6 +39,6 @@
         "eslint-plugin-unicorn": "^43.0.2",
         "prettier": "^2.7.1",
         "ts-node": "^10.9.1",
-        "typescript": "^4.8.2"
+        "typescript": "^4.8.3"
     }
 }
