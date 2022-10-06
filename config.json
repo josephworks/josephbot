@@ -1,6 +1,6 @@
 {
     "dburi": "mongodb://192.168.1.11?retryWrites=true&writeConcern=majority",
-    "token": "OTA0MjE3OTM3MzYyMTY5OTM3.Gz1oJ3.gZMlHBaGORwQ2fK2M8i7d-_9Te2Fge0BE0jE2Y",
+    "token": "OTA0MjE3OTM3MzYyMTY5OTM3.GcIytl.PMw_3TGfUUABE2XUVq8G1CyY2iEAaLqS1LR41M",
     "clientId": "904217937362169937",
     "guildId": "892995246168887316",
     "ownerId": "275808021605777409"
