@@ -20,25 +20,25 @@
     "homepage": "https://github.com/josephworks/josephbot#readme",
     "dependencies": {
         "@discordjs/opus": "^0.8.0",
-        "@discordjs/rest": "^1.3.0",
+        "@discordjs/rest": "^1.5.0",
         "@discordjs/voice": "^0.11.0",
-        "discord-api-types": "^0.37.18",
-        "discord.js": "^14.6.0",
-        "mongodb": "^4.11.0",
+        "discord-api-types": "^0.37.24",
+        "discord.js": "^14.7.1",
+        "mongodb": "^4.13.0",
         "rss-parser": "^3.12.0"
     },
     "devDependencies": {
-        "@types/node": "^18.11.9",
-        "@typescript-eslint/eslint-plugin": "^5.43.0",
-        "@typescript-eslint/parser": "^5.43.0",
-        "eslint": "^8.27.0",
+        "@types/node": "^18.11.18",
+        "@typescript-eslint/eslint-plugin": "^5.47.1",
+        "@typescript-eslint/parser": "^5.47.1",
+        "eslint": "^8.30.0",
         "eslint-config-standard": "^17.0.0",
         "eslint-plugin-import": "^2.26.0",
-        "eslint-plugin-n": "^15.5.1",
+        "eslint-plugin-n": "^15.6.0",
         "eslint-plugin-promise": "^6.1.1",
         "eslint-plugin-unicorn": "^43.0.2",
-        "prettier": "^2.7.1",
+        "prettier": "^2.8.1",
         "ts-node": "^10.9.1",
-        "typescript": "^4.9.3"
+        "typescript": "^4.9.4"
     }
 }
