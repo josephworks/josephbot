@@ -1,24 +1,63 @@
-import { Client, Message } from 'discord.js'
-import { MongoClient } from 'mongodb'
+import { ChannelType, Message } from "discord.js";
+import { checkPermissions, getGuildOption, sendTimedMessage } from "../functions";
+import { BotEvent } from "../types";
+import mongoose from "mongoose";
 
-export default (client: Client, dbclient: MongoClient): void => {
-    client.on('messageCreate', async (message: Message) => {
-        if (message.author.bot) return
-        // save sent message to database
-        dbclient.connect(async (err: any) => {
-            if (err) throw err
-            const db = dbclient.db('JosephBot')
-            const collection = db.collection('Messages')
-            const messageDocument = {
-                user: message.author.id,
-                guild: message.guild?.id,
-                channel: message.channel.id,
-                content: message.content,
-                attachments: message.attachments,
-                date: message.createdAt
+const event: BotEvent = {
+    name: "messageCreate",
+    execute: async (message: Message) => {
+        if (!message.member || message.member.user.bot) return;
+        if (!message.guild) return;
+        let prefix = process.env.PREFIX
+        if (mongoose.connection.readyState === 1) {
+            let guildPrefix = await getGuildOption(message.guild, "prefix") 
+                if (guildPrefix) prefix = guildPrefix;
+        }
+
+        if (!message.content.startsWith(prefix)) return;
+        if (message.channel.type !== ChannelType.GuildText) return;
+
+        let args = message.content.substring(prefix.length).split(" ")
+        let command = message.client.commands.get(args[0])
+
+        if (!command) {
+            let commandFromAlias = message.client.commands.find((command) => command.aliases.includes(args[0]))
+            if (commandFromAlias) command = commandFromAlias
+            else return;
+        }
+
+        let cooldown = message.client.cooldowns.get(`${command.name}-${message.member.user.username}`)
+        let neededPermissions = checkPermissions(message.member, command.permissions)
+        if (neededPermissions !== null)
+            return sendTimedMessage(
+                `
+            You don't have enough permissions to use this command. 
+            \n Needed permissions: ${neededPermissions.join(", ")}
+            `,
+                message.channel,
+                5000
+            )
+
+
+        if (command.cooldown && cooldown) {
+            if (Date.now() < cooldown) {
+                sendTimedMessage(
+                    `You have to wait ${Math.floor(Math.abs(Date.now() - cooldown) / 1000)} second(s) to use this command again.`,
+                    message.channel,
+                    5000
+                )
+                return
             }
-            await collection.insertOne(messageDocument)
-            await dbclient.close()
-        })
-    })
+            message.client.cooldowns.set(`${command.name}-${message.member.user.username}`, Date.now() + command.cooldown * 1000)
+            setTimeout(() => {
+                message.client.cooldowns.delete(`${command?.name}-${message.member?.user.username}`)
+            }, command.cooldown * 1000)
+        } else if (command.cooldown && !cooldown) {
+            message.client.cooldowns.set(`${command.name}-${message.member.user.username}`, Date.now() + command.cooldown * 1000)
+        }
+
+        command.execute(message, args)
+    }
 }
+
+export default event

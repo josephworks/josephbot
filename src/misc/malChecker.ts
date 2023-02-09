@@ -1,0 +1,47 @@
+import { Client, EmbedBuilder, TextChannel } from 'discord.js'
+import * as crypto from 'node:crypto'
+import Parser from 'rss-parser'
+import AnimeModel from '../schemas/Anime'
+
+export default async function (client: Client<boolean>) {
+    let feedData = await new Parser().parseURL(
+        'https://myanimelist.net/rss.php?type=rw&u=josephworks'
+    )
+
+    feedData.items.forEach(item => {
+        const animeId = crypto
+            .createHash('md5')
+            // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+            .update(item.title + ' - ' + item.content)
+            .digest('hex')
+
+        // look for an anime in the collection with the same id
+        AnimeModel.countDocuments({ _id: animeId }, function (err, count) {
+            if (count == 0) {
+                let newAnime = new AnimeModel({
+                    id: animeId,
+                    title: item.title,
+                    description: item.content,
+                    link: item.link,
+                    pubDate: new Date(item.pubDate ?? '')
+                })
+                newAnime.save()
+
+                // send a message to the server
+                const newPost = new EmbedBuilder()
+                        .setTitle(item.title ?? '')
+                        .setURL(item.link ?? '')
+                        .setDescription(item.content ?? '')
+                        .setColor(0x00bfff)
+                        .setTimestamp()
+                        .setFooter({
+                            text: 'JosephWorks Discord Bot',
+                            iconURL: 'https://media.discordapp.net/stickers/979183132165148712.png'
+                        })
+                ;(client.guilds.cache.get(process.env.GUILD_ID)!.channels.cache.get('993667595293180014')! as TextChannel).send({
+                    embeds: [newPost]
+                })
+            }
+        })
+    })
+}
