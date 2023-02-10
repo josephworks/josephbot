@@ -1,5 +1,5 @@
-import { SlashCommandBuilder, CommandInteraction, Collection, PermissionResolvable, Message, AutocompleteInteraction } from "discord.js"
-import mongoose from "mongoose"
+import { SlashCommandBuilder, CommandInteraction, Collection, PermissionResolvable, Message, AutocompleteInteraction } from 'discord.js'
+import mongoose from 'mongoose'
 
 export interface SlashCommand {
     command: SlashCommandBuilder | any,
@@ -47,7 +47,7 @@ declare global {
     }
 }
 
-declare module "discord.js" {
+declare module 'discord.js' {
     export interface Client {
         slashCommands: Collection<string, SlashCommand>
         commands: Collection<string, Command>,

@@ -2,9 +2,10 @@
     "compilerOptions": {
         "target": "ESNext",
         "module": "CommonJS",
-        "rootDir": "./src/",
+        "rootDir": "./src",
         "outDir": "./dist/",
         "strict": true,
+        "useUnknownInCatchVariables": false,
         "moduleResolution": "Node",
         "importHelpers": true,
         "experimentalDecorators": true,
@@ -20,7 +21,7 @@
         "sourceMap": false,
         "baseUrl": "./"
     },
-    "files": ["src/Bot.ts"],
-    "include": ["./**/*.ts"],
+    "files": ["./src/Bot.ts"],
+    "include": ["./src/**/*"],
     "exclude": ["node_modules", "dist"]
 }

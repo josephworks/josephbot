@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose'
 
-const AnimeSchema = new Schema({
+const josephworksSchema = new Schema({
     guildID: { required: true, type: String },
     options: {
         id: { type: String },
@@ -9,8 +9,8 @@ const AnimeSchema = new Schema({
         link: { type: String },
         pubDate: { type: String }
     }
-}, { versionKey: false, collectionName: 'JosephAnime' })
+}, { versionKey: false, collectionName: 'JosephWorksRSS' })
 
-const AnimeModel = model('JosephAnime', AnimeSchema, 'JosephAnime')
+const JosephworksModel = model('JosephWorksRSS', josephworksSchema, 'JosephWorksRSS')
 
-export default AnimeModel
+export default JosephworksModel

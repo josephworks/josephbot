@@ -1,31 +1,31 @@
 import { Client, EmbedBuilder, TextChannel } from 'discord.js'
 import * as crypto from 'node:crypto'
 import Parser from 'rss-parser'
-import AnimeModel from '../schemas/Anime'
+import JosephworksModel from '../schemas/josephworksArticle'
 
 export default async function (client: Client<boolean>) {
     const feedData = await new Parser().parseURL(
-        'https://myanimelist.net/rss.php?type=rw&u=josephworks'
+        'http://josephworks.net/rss.xml'
     )
 
     feedData.items.forEach(item => {
-        const animeId = crypto
+        const articleId = crypto
             .createHash('md5')
             // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
             .update(item.title + ' - ' + item.content)
             .digest('hex')
 
-        // look for an anime in the collection with the same id
-        AnimeModel.countDocuments({ _id: animeId }, function (_err, count) {
+        // look for an article in the collection with the same id
+        JosephworksModel.countDocuments({ _id: articleId }, function (_err, count) {
             if (count === 0) {
-                const newAnime = new AnimeModel({
-                    id: animeId,
+                const newArticle = new JosephworksModel({
+                    _id: articleId,
                     title: item.title,
                     description: item.content,
                     link: item.link,
                     pubDate: new Date(item.pubDate ?? '')
                 })
-                newAnime.save()
+                newArticle.save()
 
                 // send a message to the server
                 const newPost = new EmbedBuilder()
