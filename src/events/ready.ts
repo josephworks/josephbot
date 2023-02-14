@@ -13,10 +13,10 @@ const event: BotEvent = {
         const start = new Date()
 
         client.guilds.cache.forEach(guild => {
-            GuildModel.countDocuments({ _id: guild.id }, function (_err, count) {
-                if (count === 0) {
+            GuildModel.findById(guild.id, (_err, doc) => {
+                if (!doc) {
                     const newGuild = new GuildModel({
-                        guildID: guild.id,
+                        _id: guild.id,
                         name: guild.name,
                         owner: guild.ownerId,
                         createdAt: guild.createdAt,
@@ -34,8 +34,8 @@ const event: BotEvent = {
             })
 
             guild.members.cache.forEach(member => {
-                UserModel.countDocuments({ _id: member.id }, function (_err, count) {
-                    if (count === 0) {
+                UserModel.findById(member.id, (_err, doc) => {
+                    if (!doc) {
                         const newUser = new UserModel({
                             _id: member.id,
                             guildID: member.guild.id,

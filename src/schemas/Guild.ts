@@ -1,7 +1,7 @@
 import { model, Schema } from 'mongoose'
 
 const GuildSchema = new Schema({
-    guildID: { required: true, type: String },
+    _id: { required: true, type: String },
     name: { type: String },
     owner: { type: String },
     createdAt: { type: Date },
@@ -22,7 +22,7 @@ const GuildSchema = new Schema({
     options: {
         prefix: { type: String, default: process.env.PREFIX }
     }
-}, { versionKey: false, collectionName: 'Guilds' })
+}, { versionKey: false, collectionName: 'Guilds', _id: false })
 
 const GuildModel = model('Guilds', GuildSchema, 'Guilds')
 

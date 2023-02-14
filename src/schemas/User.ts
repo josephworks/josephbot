@@ -10,7 +10,7 @@ const UserSchema = new Schema({
     joinedAt: { type: Date, required: true },
     premium: { type: Date },
     bot: { type: Boolean, required: true }
-}, { versionKey: false, collectionName: 'Users' })
+}, { versionKey: false, collectionName: 'Users', _id: false })
 
 const UserModel = model('Users', UserSchema, 'Users')
 
