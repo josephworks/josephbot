@@ -16,8 +16,8 @@ export default async function (client: Client<boolean>) {
             .digest('hex')
 
         // look for an anime in the collection with the same id
-        AnimeModel.countDocuments({ _id: animeId }, function (_err, count) {
-            if (count === 0) {
+        AnimeModel.findById(animeId, (_err, doc) => {
+            if (!doc) {
                 const newAnime = new AnimeModel({
                     _id: animeId,
                     title: item.title,

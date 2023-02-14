@@ -3,13 +3,13 @@ import { Schema, model } from 'mongoose'
 const AnimeSchema = new Schema({
     guildID: { required: true, type: String },
     options: {
-        id: { type: String },
+        _id: { type: String },
         title: { type: String },
         description: { type: String },
         link: { type: String },
         pubDate: { type: String }
     }
-}, { versionKey: false, collectionName: 'JosephAnime' })
+}, { versionKey: false, collectionName: 'JosephAnime', _id: false })
 
 const AnimeModel = model('JosephAnime', AnimeSchema, 'JosephAnime')
 

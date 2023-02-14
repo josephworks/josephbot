@@ -16,22 +16,21 @@ export default async function (client: Client<boolean>) {
             .digest('hex')
 
         // look for an article in the collection with the same id
-        JosephworksModel.countDocuments({ _id: articleId }, function (_err, count) {
-            if (count === 0) {
+        JosephworksModel.findById(articleId, (_err, doc) => {
+            if (!doc) {
                 const newArticle = new JosephworksModel({
                     _id: articleId,
                     title: item.title,
-                    description: item.content,
                     link: item.link,
-                    pubDate: new Date(item.pubDate ?? '')
+                    pubDate: new Date(item.pubDate ?? ''),
+                    guid: item.guid
                 })
                 newArticle.save()
 
                 // send a message to the server
                 const newPost = new EmbedBuilder()
                     .setTitle(item.title ?? '')
-                    .setURL(item.link ?? '')
-                    .setDescription(item.content ?? '')
+                    .setURL(item.link?.replace('http://192.168.1.65', 'https://josephworks.net') ?? '')
                     .setColor(0x00bfff)
                     .setTimestamp()
                     .setFooter({
