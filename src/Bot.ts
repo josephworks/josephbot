@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Client, Collection } from 'discord.js'
 import { Command, SlashCommand } from './types'
 import { config } from 'dotenv'

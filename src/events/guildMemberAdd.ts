@@ -23,7 +23,8 @@ const event: BotEvent = {
             return console.log(
                 'You do not have a channel called welcome, please make one or set the name of the channel in line 27 of the code.'
             )
-        }(channel as TextChannel)?.send({
+        }
+        (channel as TextChannel)?.send({
             embeds: [welcome]
         })
     }

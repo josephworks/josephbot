@@ -3,7 +3,9 @@ import { color } from '../functions'
 
 module.exports = () => {
     const MONGO_URI = process.env.MONGO_URI
-    if (!MONGO_URI) { return console.log(color('text', `🍃 Mongo URI not found, ${color('error', 'skipping.')}`)) }
+    if (!MONGO_URI) {
+        return console.log(color('text', `🍃 Mongo URI not found, ${color('error', 'skipping.')}`))
+    }
     mongoose.set('strictQuery', true)
     mongoose
         .connect(`${MONGO_URI}/${process.env.MONGO_DATABASE_NAME}`)

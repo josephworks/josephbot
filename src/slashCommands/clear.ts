@@ -1,7 +1,7 @@
 import { ChannelType, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js'
 import { SlashCommand } from '../types'
 
-const ClearCommand : SlashCommand = {
+const ClearCommand: SlashCommand = {
     command: new SlashCommandBuilder()
         .setName('clear')
         .setDescription('Delets messages from the current channel.')
@@ -19,8 +19,11 @@ const ClearCommand : SlashCommand = {
             .then(async msgs => {
                 if (interaction.channel?.type === ChannelType.DM) return
                 const deletedMessages = await interaction.channel?.bulkDelete(msgs, true)
-                if (deletedMessages?.size === 0) interaction.reply('No messages were deleted.')
-                else interaction.reply(`Successfully deleted ${deletedMessages?.size} message(s)`)
+                if (deletedMessages?.size === 0) {
+                    await interaction.reply('No messages were deleted.')
+                } else {
+                    await interaction.reply(`Successfully deleted ${deletedMessages?.size} message(s)`)
+                }
                 setTimeout(() => interaction.deleteReply(), 5000)
             })
     },

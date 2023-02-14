@@ -4,7 +4,7 @@ import { BotEvent } from '../types'
 
 const event: BotEvent = {
     name: 'guildCreate',
-    execute: (guild : Guild) => {
+    execute: (guild: Guild) => {
         const newGuild = new GuildModel({
             _id: guild.id,
             name: guild.name,

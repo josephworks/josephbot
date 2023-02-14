@@ -31,7 +31,7 @@ const GPTCommand : SlashCommand = {
             presence_penalty: 0
         })
 
-        interaction.reply(response.data.choices[0].text)
+        await interaction.reply(response.data.choices[0].text)
     },
     cooldown: 10
 }

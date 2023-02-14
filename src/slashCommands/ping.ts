@@ -1,13 +1,13 @@
-import { SlashCommandBuilder, EmbedBuilder } from 'discord.js'
+import { EmbedBuilder, SlashCommandBuilder } from 'discord.js'
 import { getThemeColor } from '../functions'
 import { SlashCommand } from '../types'
 
-const command : SlashCommand = {
+const command: SlashCommand = {
     command: new SlashCommandBuilder()
         .setName('ping')
-        .setDescription("Shows the bot's ping"),
-    execute: interaction => {
-        interaction.reply({
+        .setDescription('Shows the bot\'s ping'),
+    execute: async interaction => {
+        await interaction.reply({
             embeds: [
                 new EmbedBuilder()
                     .setAuthor({ name: 'JosephBot' })

@@ -3,7 +3,7 @@ import { BotEvent } from '../types'
 
 const event: BotEvent = {
     name: 'interactionCreate',
-    execute: (interaction: Interaction) => {
+    execute: async (interaction: Interaction) => {
         if (interaction.isChatInputCommand()) {
             const command = interaction.client.slashCommands.get(interaction.commandName)
             const cooldown = interaction.client.cooldowns.get(
@@ -12,7 +12,7 @@ const event: BotEvent = {
             if (!command) return
             if (command.cooldown && cooldown) {
                 if (Date.now() < cooldown) {
-                    interaction.reply(
+                    await interaction.reply(
                         `You have to wait ${Math.floor(
                             Math.abs(Date.now() - cooldown) / 1000
                         )} second(s) to use this command again.`

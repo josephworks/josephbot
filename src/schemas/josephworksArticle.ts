@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose'
+import { model, Schema } from 'mongoose'
 
 const josephworksSchema = new Schema({
     _id: { type: String },

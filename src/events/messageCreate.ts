@@ -34,8 +34,11 @@ const event: BotEvent = {
 
         if (!command) {
             const commandFromAlias = message.client.commands.find((command) => command.aliases.includes(args[0]))
-            if (commandFromAlias) command = commandFromAlias
-            else return
+            if (commandFromAlias) {
+                command = commandFromAlias
+            } else {
+                return
+            }
         }
 
         const cooldown = message.client.cooldowns.get(`${command.name}-${message.member.user.username}`)

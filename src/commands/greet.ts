@@ -1,7 +1,7 @@
 import { PermissionFlagsBits } from 'discord.js'
 import { Command } from '../types'
 
-const command : Command = {
+const command: Command = {
     name: 'greet',
     execute: (message, args) => {
         const toGreet = message.mentions.members?.first()

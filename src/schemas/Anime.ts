@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose'
+import { model, Schema } from 'mongoose'
 
 const AnimeSchema = new Schema({
     guildID: { required: true, type: String },

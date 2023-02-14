@@ -3,7 +3,7 @@ import mongoose from 'mongoose'
 
 export interface SlashCommand {
     command: SlashCommandBuilder | any,
-    execute: (interaction : CommandInteraction) => void,
+    execute: (interaction: CommandInteraction) => void,
     autocomplete?: (interaction: AutocompleteInteraction) => void,
     cooldown?: number // in seconds
 }
@@ -27,6 +27,7 @@ export interface IGuild extends mongoose.Document {
 }
 
 export type GuildOption = keyof GuildOptions
+
 export interface BotEvent {
     name: string,
     once?: boolean | false,
