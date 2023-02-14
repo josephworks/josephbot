@@ -1,12 +1,9 @@
-import { Client, EmbedBuilder, GuildMember, TextChannel } from 'discord.js'
+import { EmbedBuilder, GuildMember, TextChannel } from 'discord.js'
+import { BotEvent } from '../types'
 
-export default (client: Client): void => {
-    /* Client when detects a new member join */
-    client.on('guildMemberAdd', async (member: GuildMember): Promise<void> => {
-        if (member.id === '962876356679589920') {
-            //anti-mohameme precautions
-            member.voice.setMute(true)
-        }
+const event: BotEvent = {
+    name: 'guildMemberAdd',
+    execute: (member: GuildMember) => {
         const guild = member.guild
         // exclude channel search in all other guilds
         const channel = guild.channels.cache.find(c => c.name === 'welcome')
@@ -22,12 +19,15 @@ export default (client: Client): void => {
                 text: 'JosephWorks Discord Bot',
                 iconURL: 'https://media.discordapp.net/stickers/979183132165148712.png'
             })
-        if (!channel)
+        if (!channel) {
             return console.log(
                 'You do not have a channel called welcome, please make one or set the name of the channel in line 27 of the code.'
             )
-        ;(channel as TextChannel)?.send({
+        }
+        (channel as TextChannel)?.send({
             embeds: [welcome]
         })
-    })
+    }
 }
+
+export default event

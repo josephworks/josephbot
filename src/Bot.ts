@@ -1,39 +1,30 @@
-import { Client, VoiceState } from 'discord.js'
-import { MongoClient } from 'mongodb'
-import guildMemberAdd from './events/guildMemberAdd'
-import guildMemberUpdate from './events/guildMemberUpdate'
-import interactionCreate from './events/interactionCreate'
-import messageCreate from './events/messageCreate'
-import ready from './events/ready'
-import JWChecker from './JWChecker'
-import MALChecker from './MALChecker'
+/* eslint-disable no-unused-vars */
+import { Client, Collection } from 'discord.js'
+import { Command, SlashCommand } from './types'
+import { config } from 'dotenv'
+import { readdirSync } from 'fs'
+import { join } from 'path'
+import malChecker from './misc/malChecker'
+import josephworksChecker from './misc/josephworksChecker'
+import deleteCommands from './misc/deleteCommands'
+config()
 
-const config = require('../config.json')
+const client = new Client({ intents: 131071 })
 
-const client = new Client({
-    // All intents are enabled by default.
-    intents: 131071,
+client.slashCommands = new Collection<string, SlashCommand>()
+client.commands = new Collection<string, Command>()
+client.cooldowns = new Collection<string, number>()
+
+const handlersDir = join(__dirname, './handlers')
+readdirSync(handlersDir).forEach(handler => {
+    require(`${handlersDir}/${handler}`)(client)
 })
-
-// Replace the uri string with your MongoDB deployment's connection string.
-const dbclient = new MongoClient(config.dburi)
-
-ready(client, dbclient)
-interactionCreate(client)
-guildMemberAdd(client)
-guildMemberUpdate(client, dbclient)
-messageCreate(client, dbclient)
 
 setInterval(function () {
-    MALChecker(client, dbclient)
-    JWChecker(client, dbclient)
+    malChecker(client)
+    josephworksChecker(client)
 }, 7000)
 
-//anti-mohameme precautions
-client.on('voiceStateUpdate', async (oldmem: VoiceState, newmem: VoiceState) => {
-    if (newmem.member?.id === '962876356679589920' && !newmem.member.voice.serverMute) {
-        newmem.member.voice.setMute(true)
-    }
-})
+// deleteCommands()
 
-client.login(config.token).then(() => console.log(`Logged in as ${client.user?.tag}`))
+client.login(process.env.TOKEN)

@@ -1,29 +1,55 @@
-import { InteractionType } from 'discord-api-types/v10'
-import { Client, CommandInteraction, Interaction } from 'discord.js'
-import { Commands } from '../Commands'
+import { Interaction } from 'discord.js'
+import { BotEvent } from '../types'
 
-export default (client: Client): void => {
-    client.on('interactionCreate', async (interaction: Interaction) => {
-        if (
-            interaction.type === InteractionType.ApplicationCommand ||
-            interaction.type === InteractionType.ModalSubmit
-        ) {
-            await handleSlashCommand(client, interaction as CommandInteraction)
+const event: BotEvent = {
+    name: 'interactionCreate',
+    execute: async (interaction: Interaction) => {
+        if (interaction.isChatInputCommand()) {
+            const command = interaction.client.slashCommands.get(interaction.commandName)
+            const cooldown = interaction.client.cooldowns.get(
+                `${interaction.commandName}-${interaction.user.username}`
+            )
+            if (!command) return
+            if (command.cooldown && cooldown) {
+                if (Date.now() < cooldown) {
+                    await interaction.reply(
+                        `You have to wait ${Math.floor(
+                            Math.abs(Date.now() - cooldown) / 1000
+                        )} second(s) to use this command again.`
+                    )
+                    setTimeout(() => interaction.deleteReply(), 5000)
+                    return
+                }
+                interaction.client.cooldowns.set(
+                    `${interaction.commandName}-${interaction.user.username}`,
+                    Date.now() + command.cooldown * 1000
+                )
+                setTimeout(() => {
+                    interaction.client.cooldowns.delete(
+                        `${interaction.commandName}-${interaction.user.username}`
+                    )
+                }, command.cooldown * 1000)
+            } else if (command.cooldown && !cooldown) {
+                interaction.client.cooldowns.set(
+                    `${interaction.commandName}-${interaction.user.username}`,
+                    Date.now() + command.cooldown * 1000
+                )
+            }
+            command.execute(interaction)
+        } else if (interaction.isAutocomplete()) {
+            const command = interaction.client.slashCommands.get(interaction.commandName)
+            if (!command) {
+                console.error(`No command matching ${interaction.commandName} was found.`)
+                return
+            }
+            try {
+                if (!command.autocomplete) return
+                command.autocomplete(interaction)
+            } catch (error) {
+                console.error(error)
+            }
         }
-    })
-}
-
-const handleSlashCommand = async (
-    client: Client,
-    interaction: CommandInteraction
-): Promise<void> => {
-    const slashCommand = Commands.find(c => c.name === interaction.commandName)
-    if (!slashCommand) {
-        await interaction.followUp({ content: 'An error has occurred' })
-        return
     }
-
-    await interaction.deferReply()
-
-    slashCommand.run(client, interaction)
 }
+
+export default event
