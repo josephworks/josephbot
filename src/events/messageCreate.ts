@@ -10,7 +10,7 @@ const event: BotEvent = {
         const newMessage = new MessageModel({
             user: message.author.id,
             username: message.author.username,
-            guild: message.guild!.id,
+            guild: message.guild?.id,
             channel: message.channel.id,
             content: message.content,
             attachments: message.attachments,

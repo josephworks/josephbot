@@ -10,6 +10,7 @@ const GPTCommand : SlashCommand = {
             return option
                 .setName('message')
                 .setDescription('Query to be sent to the GPT-3 API.')
+                .setRequired(true)
         })
         .setDefaultMemberPermissions(PermissionFlagsBits.SendMessages),
     execute: async interaction => {

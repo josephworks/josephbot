@@ -19,7 +19,7 @@ export default async function (client: Client<boolean>) {
         AnimeModel.countDocuments({ _id: animeId }, function (_err, count) {
             if (count === 0) {
                 const newAnime = new AnimeModel({
-                    id: animeId,
+                    _id: animeId,
                     title: item.title,
                     description: item.content,
                     link: item.link,

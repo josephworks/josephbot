@@ -5,7 +5,7 @@ import JosephworksModel from '../schemas/josephworksArticle'
 
 export default async function (client: Client<boolean>) {
     const feedData = await new Parser().parseURL(
-        'http://josephworks.net/rss.xml'
+        'http://192.168.1.65/rss.xml'
     )
 
     feedData.items.forEach(item => {
