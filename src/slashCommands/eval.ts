@@ -21,6 +21,10 @@ const command: SlashCommand = {
             if (code) {
                 // eslint-disable-next-line no-eval
                 evaled = eval(code)
+                // catch errors
+                if (typeof evaled !== 'string') {
+                    evaled = require('util').inspect(evaled)
+                }
             }
 
             await interaction.reply({
