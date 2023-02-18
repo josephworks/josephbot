@@ -1,7 +1,6 @@
 import { EmbedBuilder, SlashCommandBuilder } from 'discord.js'
 import { getThemeColor } from '../functions'
 import { SlashCommand } from '../types'
-import util from 'util'
 
 const command: SlashCommand = {
     command: new SlashCommandBuilder()
@@ -27,6 +26,8 @@ const command: SlashCommand = {
                     console.error(error)
                 }
             }
+
+            if (evaled === '') evaled = 'No result.'
 
             await interaction.reply({
                 embeds: [
