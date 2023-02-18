@@ -10,7 +10,7 @@ const command: SlashCommand = {
         .addStringOption(option => {
             return option
                 .setName('code')
-                .setDescription('Query to be sent to the GPT-3 API.')
+                .setDescription('The code to run.')
                 .setRequired(true)
         }),
     execute: async interaction => {
@@ -22,7 +22,7 @@ const command: SlashCommand = {
             if (code) {
                 try {
                     // eslint-disable-next-line no-eval
-                    evaled = eval(code)
+                    evaled = await eval(code)
                 } catch (error) {
                     console.error(error)
                 }
