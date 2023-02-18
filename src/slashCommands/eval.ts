@@ -1,6 +1,7 @@
 import { EmbedBuilder, SlashCommandBuilder } from 'discord.js'
 import { getThemeColor } from '../functions'
 import { SlashCommand } from '../types'
+import util from 'util'
 
 const command: SlashCommand = {
     command: new SlashCommandBuilder()
@@ -19,11 +20,11 @@ const command: SlashCommand = {
             const code = interaction.options.get('code')?.value as string
             let evaled = ''
             if (code) {
-                // eslint-disable-next-line no-eval
-                evaled = eval(code)
-                // catch errors
-                if (typeof evaled !== 'string') {
-                    evaled = require('util').inspect(evaled)
+                try {
+                    // eslint-disable-next-line no-eval
+                    evaled = eval(code)
+                } catch (error) {
+                    console.error(error)
                 }
             }
 
