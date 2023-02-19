@@ -1,4 +1,4 @@
-import { Client } from 'discord.js'
+import { ActivityType, Client, OAuth2Scopes, PermissionFlagsBits } from 'discord.js'
 import { BotEvent } from '../types'
 import { color } from '../functions'
 import GuildModel from '../schemas/Guild'
@@ -9,6 +9,22 @@ const event: BotEvent = {
     once: true,
     execute: (client: Client) => {
         console.log(color('text', `✅ Logged in as ${color('variable', client.user?.tag)}`))
+
+        client.user?.setPresence({
+            activities: [
+                {
+                    name: 'with JosephWorks',
+                    type: ActivityType.Playing
+                }
+            ],
+            status: 'online'
+        })
+        const link = client.generateInvite({
+            scopes: [OAuth2Scopes.Bot],
+            permissions: PermissionFlagsBits.Administrator
+        })
+
+        console.log(`Invite link: ${link}`)
 
         const start = new Date()
 
