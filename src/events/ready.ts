@@ -15,16 +15,21 @@ const event: BotEvent = {
                 {
                     name: 'with JosephWorks',
                     type: ActivityType.Playing
+                },
+                {
+                    name: 'Invite Bot',
+                    type: ActivityType.Watching,
+                    url: 'https://discord.com/api/oauth2/authorize?client_id=904217937362169937&permissions=8&scope=bot'
                 }
             ],
             status: 'online'
         })
+
         const link = client.generateInvite({
             scopes: [OAuth2Scopes.Bot],
             permissions: PermissionFlagsBits.Administrator
         })
-
-        console.log(`Invite link: ${link}`)
+        console.log(color('text', ` ℹ️ Invite link: ${color('variable', link)}`))
 
         const start = new Date()
 
