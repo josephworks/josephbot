@@ -20,7 +20,8 @@ const GuildSchema = new Schema({
         lastMessage: channel.lastMessage ? channel.lastMessage.id : null, */
     }],
     options: {
-        prefix: { type: String, default: process.env.PREFIX }
+        prefix: { type: String, default: process.env.PREFIX },
+        sharedChannelID: { type: String }
     }
 }, { versionKey: false, collectionName: 'Guilds', _id: false })
 

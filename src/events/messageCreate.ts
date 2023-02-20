@@ -1,23 +1,53 @@
-import { ChannelType, Message } from 'discord.js'
+import { ChannelType, Message, TextChannel } from 'discord.js'
 import { checkPermissions, getGuildOption, sendTimedMessage } from '../functions'
 import { BotEvent } from '../types'
 import mongoose from 'mongoose'
 import MessageModel from '../schemas/Message'
+import SharedMessageModel from '../schemas/SharedMessage'
+import GuildModel from '../schemas/Guild'
 
 const event: BotEvent = {
     name: 'messageCreate',
     execute: async (message: Message) => {
-        const newMessage = new MessageModel({
-            user: message.author.id,
-            username: message.author.username,
-            guild: message.guild?.id,
-            channel: message.channel.id,
-            content: message.content,
-            attachments: message.attachments,
-            date: new Date()
-        })
-        newMessage.save()
+        if (message.channelId === (await getGuildOption(message.guild!, 'sharedChannelID')) && message.author.id !== message.client.user?.id) {
+            const newSharedMessage = new SharedMessageModel({
+                user: message.author.id,
+                username: message.author.username,
+                guild: message.guild?.id,
+                channel: message.channel.id,
+                content: message.content,
+                attachments: message.attachments,
+                date: new Date()
+            })
+            newSharedMessage.save()
 
+            GuildModel.find({ 'options.sharedChannelID': { $ne: message.channel.id } }, (err, docs) => {
+                if (err) console.log(err)
+                docs.forEach((doc) => {
+                    const channel = message.client.channels.cache.get(doc.options.sharedChannelID)
+                    if (channel) {
+                        (channel as TextChannel).send({
+                            content: `**${message.author.username}** in **${message.guild?.name}** said: \n${message.content}`,
+                            files: message.attachments.map((attachment) => attachment.url),
+                            allowedMentions: { roles: [], users: [] }
+                        })
+                    }
+                })
+            })
+
+            return
+        } else {
+            const newMessage = new MessageModel({
+                user: message.author.id,
+                username: message.author.username,
+                guild: message.guild?.id,
+                channel: message.channel.id,
+                content: message.content,
+                attachments: message.attachments,
+                date: new Date()
+            })
+            newMessage.save()
+        }
         if (!message.member || message.member.user.bot) return
         if (!message.guild) return
         let prefix = process.env.PREFIX

@@ -1,6 +1,6 @@
 import chalk from 'chalk'
 import { Guild, GuildMember, PermissionFlagsBits, PermissionResolvable, TextChannel } from 'discord.js'
-import GuildDB from './schemas/Guild'
+import GuildModel from './schemas/Guild'
 import { GuildOption } from './types'
 import mongoose from 'mongoose'
 
@@ -44,15 +44,15 @@ export const sendTimedMessage = (message: string, channel: TextChannel, duration
 
 export const getGuildOption = async (guild: Guild, option: GuildOption) => {
     if (mongoose.connection.readyState === 0) throw new Error('Database not connected.')
-    const foundGuild = await GuildDB.findOne({ guildID: guild.id })
+    const foundGuild = await GuildModel.findOne({ _id: guild.id })
     if (!foundGuild || foundGuild.options === undefined) return null
     return foundGuild.options[option]
 }
 
 export const setGuildOption = async (guild: Guild, option: GuildOption, value: any) => {
     if (mongoose.connection.readyState === 0) throw new Error('Database not connected.')
-    const foundGuild = await GuildDB.findOne({ guildID: guild.id })
-    if (!foundGuild || foundGuild.options === undefined) return null
-    foundGuild.options[option] = value
+    const foundGuild = await GuildModel.findOne({ _id: guild.id })
+    if (!foundGuild) return null
+    foundGuild.options![option] = value
     foundGuild.save()
 }
