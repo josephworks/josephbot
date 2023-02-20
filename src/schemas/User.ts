@@ -6,10 +6,15 @@ const UserSchema = new Schema({
     discriminator: { type: String, required: true },
     avatar: { type: String },
     createdAt: { type: Date, required: true },
-    roles: { type: [String], required: true },
-    joinedAt: { type: Date, required: true },
-    premium: { type: Date },
-    bot: { type: Boolean, required: true }
+    bot: { type: Boolean, required: true },
+    guildData: [
+        {
+            guildID: { type: String, required: true },
+            roles: { type: Array, required: true },
+            joinedAt: { type: Date, required: true },
+            premium: { type: Date }
+        }
+    ]
 }, { versionKey: false, collectionName: 'Users', _id: false })
 
 const UserModel = model('Users', UserSchema, 'Users')

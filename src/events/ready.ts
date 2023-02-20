@@ -49,29 +49,55 @@ const event: BotEvent = {
                 }
             })
 
-            guild.members.cache.forEach(member => {
-                UserModel.findById(member.id, (_err, doc) => {
+            guild.members.cache.forEach(async member => {
+                UserModel.findById(member.id, (err, doc) => {
                     if (!doc) {
                         const newUser = new UserModel({
                             _id: member.id,
-                            guildID: member.guild.id,
                             username: member.user.username,
                             discriminator: member.user.discriminator,
                             avatar: member.user.avatar,
                             createdAt: member.user.createdAt,
-                            roles: member.roles.cache.map(role => role.id),
-                            joinedAt: member.joinedAt,
-                            premium: member.premiumSince,
-                            bot: member.user.bot
+                            bot: member.user.bot,
+                            guildData: [
+                                {
+                                    guildID: member.guild.id,
+                                    roles: member.roles.cache.map(role => role.id),
+                                    joinedAt: member.joinedAt,
+                                    premium: member.premiumSince
+                                }
+                            ]
                         })
                         newUser.save()
+                    } else {
+                        let hasData = false
+                        for (let i = 0; i < doc.guildData.length; i++) {
+                            if (doc.guildData[i].guildID === member.guild.id) {
+                                hasData = true
+                            }
+                        }
+                        if (!hasData) {
+                            doc.guildData.push({
+                                guildID: member.guild.id,
+                                roles: member.roles.cache.map(role => role.id),
+                                joinedAt: member.joinedAt,
+                                premium: member.premiumSince
+                            })
+                        }
+                        doc.save()
                     }
+                    if (err) console.log(err)
                 })
             })
         })
 
         const diff = new Date().getTime() - start.getTime()
-        console.log(color('text', `✅ Finished updating database in ${color('variable', diff)} milliseconds.`))
+        console.log(
+            color(
+                'text',
+                `✅ Finished updating database in ${color('variable', diff)} milliseconds.`
+            )
+        )
     }
 }
 

@@ -1,5 +1,5 @@
 import { EmbedBuilder, GuildMember, TextChannel } from 'discord.js'
-import UserModel from 'src/schemas/User'
+import UserModel from '../schemas/User'
 import { BotEvent } from '../types'
 
 const event: BotEvent = {
@@ -29,19 +29,44 @@ const event: BotEvent = {
             embeds: [welcome]
         })
 
-        const newUser = new UserModel({
-            _id: member.id,
-            guildID: member.guild.id,
-            username: member.user.username,
-            discriminator: member.user.discriminator,
-            avatar: member.user.avatar,
-            createdAt: member.user.createdAt,
-            roles: member.roles.cache.map(role => role.id),
-            joinedAt: member.joinedAt,
-            premium: member.premiumSince,
-            bot: member.user.bot
+        UserModel.findById(member.id, (err, doc) => {
+            if (!doc) {
+                const newUser = new UserModel({
+                    _id: member.id,
+                    username: member.user.username,
+                    discriminator: member.user.discriminator,
+                    avatar: member.user.avatar,
+                    createdAt: member.user.createdAt,
+                    bot: member.user.bot,
+                    guildData: [
+                        {
+                            guildID: member.guild.id,
+                            roles: member.roles.cache.map(role => role.id),
+                            joinedAt: member.joinedAt,
+                            premium: member.premiumSince
+                        }
+                    ]
+                })
+                newUser.save()
+            } else {
+                let hasData = false
+                for (let i = 0; i < doc.guildData.length; i++) {
+                    if (doc.guildData[i].guildID === member.guild.id) {
+                        hasData = true
+                    }
+                }
+                if (!hasData) {
+                    doc.guildData.push({
+                        guildID: member.guild.id,
+                        roles: member.roles.cache.map(role => role.id),
+                        joinedAt: member.joinedAt,
+                        premium: member.premiumSince
+                    })
+                }
+                doc.save()
+            }
+            if (err) console.log(err)
         })
-        newUser.save()
     }
 }
 
