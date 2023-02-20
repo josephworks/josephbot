@@ -1,4 +1,5 @@
 import { EmbedBuilder, GuildMember, TextChannel } from 'discord.js'
+import UserModel from 'src/schemas/User'
 import { BotEvent } from '../types'
 
 const event: BotEvent = {
@@ -27,6 +28,20 @@ const event: BotEvent = {
         (channel as TextChannel)?.send({
             embeds: [welcome]
         })
+
+        const newUser = new UserModel({
+            _id: member.id,
+            guildID: member.guild.id,
+            username: member.user.username,
+            discriminator: member.user.discriminator,
+            avatar: member.user.avatar,
+            createdAt: member.user.createdAt,
+            roles: member.roles.cache.map(role => role.id),
+            joinedAt: member.joinedAt,
+            premium: member.premiumSince,
+            bot: member.user.bot
+        })
+        newUser.save()
     }
 }
 
