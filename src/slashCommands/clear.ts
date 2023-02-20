@@ -1,4 +1,4 @@
-import { ChannelType, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js'
+import { ChannelType, PermissionFlagsBits, SlashCommandBuilder, TextChannel } from 'discord.js'
 import { SlashCommand } from '../types'
 
 const ClearCommand: SlashCommand = {
@@ -15,10 +15,10 @@ const ClearCommand: SlashCommand = {
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages),
     execute: interaction => {
         const messageCount = Number(interaction.options.get('messagecount')?.value)
-        interaction.channel?.messages.fetch({ limit: messageCount })
+        ;(interaction.channel as TextChannel)?.messages.fetch({ limit: messageCount })
             .then(async msgs => {
                 if (interaction.channel?.type === ChannelType.DM) return
-                const deletedMessages = await interaction.channel?.bulkDelete(msgs, true)
+                const deletedMessages = await (interaction.channel as TextChannel)?.bulkDelete(msgs, true)
                 if (deletedMessages?.size === 0) {
                     await interaction.reply('No messages were deleted.')
                 } else {

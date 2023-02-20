@@ -1,3 +1,4 @@
+import { TextChannel } from 'discord.js'
 import { setGuildOption } from '../functions'
 import { Command } from '../types'
 
@@ -8,7 +9,7 @@ const command: Command = {
         if (!message.guild) return
         if (!channelID) setGuildOption(message.guild, 'sharedChannelID', message.channel.id)
         setGuildOption(message.guild, 'sharedChannelID', channelID)
-        message.channel.send('Shared channel successfully changed!')
+        ;(message.channel as TextChannel).send('Shared channel successfully changed!')
     },
     permissions: ['Administrator'],
     aliases: []
