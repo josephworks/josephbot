@@ -23,7 +23,7 @@
         "@discordjs/rest": "^1.5.0",
         "@discordjs/voice": "^0.14.0",
         "chalk": "^4.1.2",
-        "discord-api-types": "^0.37.34",
+        "discord-api-types": "^0.37.35",
         "discord.js": "^14.7.1",
         "dotenv": "^16.0.3",
         "mongoose": "^6.9.2",
