@@ -15,11 +15,6 @@ const event: BotEvent = {
                 {
                     name: 'with JosephWorks',
                     type: ActivityType.Playing
-                },
-                {
-                    name: 'Invite Bot',
-                    type: ActivityType.Watching,
-                    url: 'https://discord.com/api/oauth2/authorize?client_id=904217937362169937&permissions=8&scope=bot'
                 }
             ],
             status: 'online'
