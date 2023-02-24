@@ -31,7 +31,7 @@ const GPTCommand : SlashCommand = {
             presence_penalty: 0
         })
 
-        await interaction.reply(response.data.choices[0].text)
+        await interaction.reply(interaction.member!.user.username + ' asked ' + message?.value + '\n' + response.data.choices[0].text)
     },
     cooldown: 10
 }

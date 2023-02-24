@@ -5,6 +5,7 @@ import mongoose from 'mongoose'
 import MessageModel from '../schemas/Message'
 import SharedMessageModel from '../schemas/SharedMessage'
 import GuildModel from '../schemas/Guild'
+import UserModel from '../schemas/User'
 
 const event: BotEvent = {
     name: 'messageCreate',
@@ -21,18 +22,43 @@ const event: BotEvent = {
             })
             newSharedMessage.save()
 
-            GuildModel.find({ 'options.sharedChannelID': { $ne: message.channel.id } }, (err, docs) => {
-                if (err) console.log(err)
-                docs.forEach((doc) => {
-                    const channel = message.client.channels.cache.get(doc.options.sharedChannelID)
-                    if (channel) {
-                        (channel as TextChannel).send({
-                            content: `**${message.author.username}** in **${message.guild?.name}** said: \n${message.content}`,
-                            files: message.attachments.map((attachment) => attachment.url),
-                            allowedMentions: { roles: [], users: [] }
+            if (message.content.startsWith('>')) {
+                if (message.content.startsWith('>ban')) {
+                    UserModel.findOne({ _id: message.content.substring(7, message.content.length - 1) }, (_err, doc) => {
+                        doc.sharedMessages.banned = true
+                        doc.save()
+
+                        ;(message.channel as TextChannel).send({ content: doc.username + ' has been banned from using the shared channel.' })
+                    })
+                } else if (message.content.startsWith('>unban')) {
+                    UserModel.findOne({ _id: message.content.substring(9, message.content.length - 1) }, (_err, doc) => {
+                        doc.sharedMessages.banned = false
+                        doc.save()
+
+                        ;(message.channel as TextChannel).send({ content: doc.username + ' has been unbanned from using the shared channel.' })
+                    })
+                }
+                return
+            }
+
+            UserModel.findOne({ _id: message.author.id }).then((doc) => {
+                if (doc!.sharedMessages!.banned) {
+                    sendTimedMessage('You are banned from using the shared channel.', message.channel as TextChannel, 5000)
+                } else {
+                    GuildModel.find({ 'options.sharedChannelID': { $ne: message.channel.id } }, (err, docs) => {
+                        if (err) console.log(err)
+                        docs.forEach((doc) => {
+                            const channel = message.client.channels.cache.get(doc.options.sharedChannelID)
+                            if (channel) {
+                                (channel as TextChannel).send({
+                                    content: `**${message.author.username}** in **${message.guild?.name}** said: \n${message.content}`,
+                                    files: message.attachments.map((attachment) => attachment.url),
+                                    allowedMentions: { roles: [], users: [] }
+                                })
+                            }
                         })
-                    }
-                })
+                    })
+                }
             })
 
             return

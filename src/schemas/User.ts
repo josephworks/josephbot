@@ -14,7 +14,10 @@ const UserSchema = new Schema({
             joinedAt: { type: Date, required: true },
             premium: { type: Date }
         }
-    ]
+    ],
+    sharedMessages: {
+        banned: { type: Boolean, default: false }
+    }
 }, { versionKey: false, collectionName: 'Users', _id: false })
 
 const UserModel = model('Users', UserSchema, 'Users')
