@@ -1215,10 +1215,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:^18.14.2":
+"@types/node@npm:*":
   version: 18.14.4
   resolution: "@types/node@npm:18.14.4"
   checksum: 3f2f625777747b9f87e793eea5a8bbf1ac2c828846bda5811d07a457d55cfe6762239779759de61e7b7e917632b9ceee3f7ffd2a024117e7ec364dc1b4eb8d55
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^18.14.6":
+  version: 18.14.6
+  resolution: "@types/node@npm:18.14.6"
+  checksum: 2f88f482cabadc6dbddd627a1674239e68c3c9beab56eb4ae2309fb96fd17fc3a509d99b0309bafe13b58529574f49ecf3a583f2ebe2896dd32fe4be436dc96e
   languageName: node
   linkType: hard
 
@@ -3163,7 +3170,7 @@ __metadata:
     "@discordjs/opus": ^0.9.0
     "@discordjs/rest": ^1.5.0
     "@discordjs/voice": ^0.14.0
-    "@types/node": ^18.14.2
+    "@types/node": ^18.14.6
     "@typescript-eslint/eslint-plugin": ^5.54.0
     "@typescript-eslint/parser": ^5.54.0
     chalk: ^4.1.2
@@ -3177,7 +3184,7 @@ __metadata:
     eslint-plugin-promise: ^6.1.1
     eslint-plugin-unicorn: ^45.0.2
     mongoose: ^6.10.0
-    openai: ^3.1.0
+    openai: ^3.2.1
     prettier: ^2.8.4
     rss-parser: ^3.12.0
     ts-node: ^10.9.1
@@ -3785,7 +3792,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"openai@npm:^3.1.0":
+"openai@npm:^3.2.1":
   version: 3.2.1
   resolution: "openai@npm:3.2.1"
   dependencies:
@@ -4109,7 +4116,7 @@ __metadata:
 
 "resolve@patch:resolve@^1.10.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.22.1#~builtin<compat/resolve>":
   version: 1.22.1
-  resolution: "resolve@patch:resolve@npm%3A1.22.1#~builtin<compat/resolve>::version=1.22.1&hash=c3c19d"
+  resolution: "resolve@patch:resolve@npm%3A1.22.1#~builtin<compat/resolve>::version=1.22.1&hash=07638b"
   dependencies:
     is-core-module: ^2.9.0
     path-parse: ^1.0.7
@@ -4692,11 +4699,11 @@ __metadata:
 
 "typescript@patch:typescript@^4.9.5#~builtin<compat/typescript>":
   version: 4.9.5
-  resolution: "typescript@patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=23ec76"
+  resolution: "typescript@patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=a1c5e5"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: ab417a2f398380c90a6cf5a5f74badd17866adf57f1165617d6a551f059c3ba0a3e4da0d147b3ac5681db9ac76a303c5876394b13b3de75fdd5b1eaa06181c9d
+  checksum: 2eee5c37cad4390385db5db5a8e81470e42e8f1401b0358d7390095d6f681b410f2c4a0c496c6ff9ebd775423c7785cdace7bcdad76c7bee283df3d9718c0f20
   languageName: node
   linkType: hard
 
