@@ -16,7 +16,8 @@ export default async function (client: Client<boolean>) {
             .digest('hex')
 
         // look for an article in the collection with the same id
-        JosephworksModel.findById(articleId, (_err, doc) => {
+        const doc = JosephworksModel.findById(articleId)
+        try {
             if (!doc) {
                 const newArticle = new JosephworksModel({
                     _id: articleId,
@@ -41,6 +42,8 @@ export default async function (client: Client<boolean>) {
                     embeds: [newPost]
                 })
             }
-        })
+        } catch (err) {
+            console.error(err)
+        }
     })
 }

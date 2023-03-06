@@ -16,7 +16,8 @@ export default async function (client: Client<boolean>) {
             .digest('hex')
 
         // look for an anime in the collection with the same id
-        AnimeModel.findById(animeId, (_err, doc) => {
+        const doc = AnimeModel.findById(animeId)
+        try {
             if (!doc) {
                 const newAnime = new AnimeModel({
                     _id: animeId,
@@ -42,6 +43,8 @@ export default async function (client: Client<boolean>) {
                     embeds: [newPost]
                 })
             }
-        })
+        } catch (err) {
+            console.error(err)
+        }
     })
 }

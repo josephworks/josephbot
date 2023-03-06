@@ -4,7 +4,7 @@ import { BotEvent } from '../types'
 
 const event: BotEvent = {
     name: 'guildMemberAdd',
-    execute: (member: GuildMember) => {
+    execute: async (member: GuildMember) => {
         const guild = member.guild
         // exclude channel search in all other guilds
         const channel = guild.channels.cache.find(c => c.name === 'welcome')
@@ -29,7 +29,8 @@ const event: BotEvent = {
             embeds: [welcome]
         })
 
-        UserModel.findById(member.id, (err, doc) => {
+        const doc = await UserModel.findById(member.id)
+        try {
             if (!doc) {
                 const newUser = new UserModel({
                     _id: member.id,
@@ -59,14 +60,15 @@ const event: BotEvent = {
                     doc.guildData.push({
                         guildID: member.guild.id,
                         roles: member.roles.cache.map(role => role.id),
-                        joinedAt: member.joinedAt,
-                        premium: member.premiumSince
+                        joinedAt: member.joinedAt!,
+                        premium: member.premiumSince!
                     })
                 }
                 doc.save()
             }
-            if (err) console.log(err)
-        })
+        } catch (err) {
+            console.error(err)
+        }
     }
 }
 

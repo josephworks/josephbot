@@ -29,8 +29,9 @@ const event: BotEvent = {
         const start = new Date()
 
         client.guilds.cache.forEach(guild => {
-            GuildModel.findById(guild.id, (_err, doc) => {
-                if (!doc) {
+            const currGuild = GuildModel.findById(guild.id)
+            try {
+                if (!currGuild) {
                     const newGuild = new GuildModel({
                         _id: guild.id,
                         name: guild.name,
@@ -47,10 +48,13 @@ const event: BotEvent = {
                     })
                     newGuild.save()
                 }
-            })
+            } catch (err) {
+                console.log(err)
+            }
 
             guild.members.cache.forEach(async member => {
-                UserModel.findById(member.id, (err, doc) => {
+                try {
+                    const doc = await UserModel.findById(member.id)
                     if (!doc) {
                         const newUser = new UserModel({
                             _id: member.id,
@@ -80,14 +84,15 @@ const event: BotEvent = {
                             doc.guildData.push({
                                 guildID: member.guild.id,
                                 roles: member.roles.cache.map(role => role.id),
-                                joinedAt: member.joinedAt,
-                                premium: member.premiumSince
+                                joinedAt: member.joinedAt!,
+                                premium: member.premiumSince!
                             })
                         }
-                        doc.save()
+                        await doc.save()
                     }
-                    if (err) console.log(err)
-                })
+                } catch (err) {
+                    console.log(err)
+                }
             })
         })
 
