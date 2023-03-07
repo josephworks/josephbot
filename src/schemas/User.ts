@@ -12,7 +12,10 @@ const UserSchema = new Schema({
             guildID: { type: String, required: true },
             roles: { type: Array, required: true },
             joinedAt: { type: Date, required: true },
-            premium: { type: Date }
+            premium: { type: Date },
+            options: {
+                vcPing: { type: Boolean, default: false }
+            }
         }
     ],
     sharedMessages: {

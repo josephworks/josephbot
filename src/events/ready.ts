@@ -85,7 +85,10 @@ const event: BotEvent = {
                                 guildID: member.guild.id,
                                 roles: member.roles.cache.map(role => role.id),
                                 joinedAt: member.joinedAt!,
-                                premium: member.premiumSince!
+                                premium: member.premiumSince!,
+                                options: {
+                                    vcPing: false
+                                }
                             })
                         }
                         await doc.save()
