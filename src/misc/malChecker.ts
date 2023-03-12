@@ -8,16 +8,16 @@ export default async function (client: Client<boolean>) {
         'https://myanimelist.net/rss.php?type=rw&u=josephworks'
     )
 
-    feedData.items.forEach(item => {
+    feedData.items.forEach(async item => {
         const animeId = crypto
             .createHash('md5')
             // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
             .update(item.title + ' - ' + item.content)
             .digest('hex')
 
-        // look for an anime in the collection with the same id
-        const doc = AnimeModel.findById(animeId)
         try {
+            // look for an anime in the collection with the same id
+            const doc = await AnimeModel.findById(animeId)
             if (!doc) {
                 const newAnime = new AnimeModel({
                     _id: animeId,
