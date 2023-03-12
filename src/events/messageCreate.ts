@@ -25,7 +25,7 @@ const event: BotEvent = {
             })
             newSharedMessage.save()
 
-            if (message.content.startsWith('>')) {
+            if (message.content.startsWith('>') && message.member?.id === process.env.OWNER_ID) {
                 if (message.content.startsWith('>ban')) {
                     try {
                         const doc = await UserModel.findOne({
