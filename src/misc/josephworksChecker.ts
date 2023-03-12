@@ -8,16 +8,16 @@ export default async function (client: Client<boolean>) {
         'http://192.168.1.65/rss.xml'
     )
 
-    feedData.items.forEach(item => {
+    feedData.items.forEach(async item => {
         const articleId = crypto
             .createHash('md5')
             // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
             .update(item.title + ' - ' + item.content)
             .digest('hex')
 
-        // look for an article in the collection with the same id
-        const doc = JosephworksModel.findById(articleId)
         try {
+            // look for an article in the collection with the same id
+            const doc = await JosephworksModel.findById(articleId)
             if (!doc) {
                 const newArticle = new JosephworksModel({
                     _id: articleId,

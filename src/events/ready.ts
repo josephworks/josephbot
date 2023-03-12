@@ -28,8 +28,8 @@ const event: BotEvent = {
 
         const start = new Date()
 
-        client.guilds.cache.forEach(guild => {
-            const currGuild = GuildModel.findById(guild.id)
+        client.guilds.cache.forEach(async guild => {
+            const currGuild = await GuildModel.findById(guild.id)
             try {
                 if (!currGuild) {
                     const newGuild = new GuildModel({
