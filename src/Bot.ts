@@ -7,6 +7,7 @@ import { join } from 'path'
 import malChecker from './misc/malChecker'
 import josephworksChecker from './misc/josephworksChecker'
 import deleteCommands from './misc/deleteCommands'
+import malCheckerBless from './misc/malCheckerBless'
 config()
 
 const client = new Client({ intents: 131071 })
@@ -22,6 +23,7 @@ readdirSync(handlersDir).forEach(handler => {
 
 setInterval(function () {
     malChecker(client)
+    malCheckerBless(client)
     josephworksChecker(client)
 }, 7000)
 
