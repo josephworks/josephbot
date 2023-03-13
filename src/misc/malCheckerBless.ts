@@ -5,7 +5,7 @@ import AnimeBlessModel from '../schemas/Anime'
 
 export default async function (client: Client<boolean>) {
     const feedData = await new Parser().parseURL(
-        'https://myanimelist.net/rss.php?type=rw&u=josephworks'
+        'https://myanimelist.net/rss.php?type=rw&u=BlessyBellaJane'
     )
 
     feedData.items.forEach(async item => {
