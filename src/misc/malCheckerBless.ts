@@ -28,7 +28,7 @@ export default async function (client: Client<boolean>) {
                 })
                 newAnime.save()
 
-                // send a message to the server
+                /* // send a message to the server
                 const newPost = new EmbedBuilder()
                     .setTitle(item.title ?? '')
                     .setURL(item.link ?? '')
@@ -41,7 +41,7 @@ export default async function (client: Client<boolean>) {
                     })
                 ;(client.guilds.cache.get(process.env.GUILD_ID)!.channels.cache.get('993667595293180014')! as TextChannel).send({
                     embeds: [newPost]
-                })
+                }) */
             }
         } catch (err) {
             console.error(err)
