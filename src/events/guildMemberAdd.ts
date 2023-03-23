@@ -5,13 +5,13 @@ import { BotEvent } from '../types'
 const event: BotEvent = {
     name: 'guildMemberAdd',
     execute: async (member: GuildMember) => {
-        const guild = member.guild
+        // TODO: Make this disabled by default and implement /options welcome #channel
         // exclude channel search in all other guilds
-        const channel = guild.channels.cache.find(c => c.name === 'welcome')
+        const channel = member.guild.channels.cache.find(c => c.name === 'welcome')
         const welcome = new EmbedBuilder()
             .setTitle('New User Has Joined!')
             .setDescription(
-                `Welcome To Our Server ${member.user}! We are happy to have you in this server! You are member number ${guild.memberCount} btw!`
+                `Welcome To Our Server ${member.user}! We are happy to have you in this server! You are member number ${member.guild.memberCount} btw!`
             )
             .setColor('#2F3136')
             .setThumbnail(member.displayAvatarURL())

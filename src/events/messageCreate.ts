@@ -46,7 +46,7 @@ const event: BotEvent = {
                                     message.channel.messages.cache.get(
                                         message.reference?.messageId!
                                     )!.content
-                                } "\nsaying: \n${message.content}`,
+                                }"\nsaying: \n${message.content}`,
                                 files: message.attachments.map(attachment => attachment.url),
                                 allowedMentions: { roles: [], users: [] }
                             })
