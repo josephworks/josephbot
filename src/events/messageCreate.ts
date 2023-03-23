@@ -1,9 +1,9 @@
-import { ChannelType, Message, TextChannel } from 'discord.js'
+import { ChannelType, Message, MessageType, TextChannel } from 'discord.js'
 import { checkPermissions, getGuildOption, sendTimedMessage } from '../functions'
+import { handleCommands, saveSharedMessage } from '../SharedMessage'
 import { BotEvent } from '../types'
 import mongoose from 'mongoose'
 import MessageModel from '../schemas/Message'
-import SharedMessageModel from '../schemas/SharedMessage'
 import GuildModel from '../schemas/Guild'
 import UserModel from '../schemas/User'
 
@@ -14,54 +14,8 @@ const event: BotEvent = {
             message.channelId === (await getGuildOption(message.guild!, 'sharedChannelID')) &&
             message.author.id !== message.client.user?.id
         ) {
-            const newSharedMessage = new SharedMessageModel({
-                user: message.author.id,
-                username: message.author.username,
-                guild: message.guild?.id,
-                channel: message.channel.id,
-                content: message.content,
-                attachments: message.attachments,
-                date: new Date()
-            })
-            newSharedMessage.save()
-
-            if (message.content.startsWith('>') && message.member?.id === process.env.OWNER_ID) {
-                if (message.content.startsWith('>ban')) {
-                    try {
-                        const doc = await UserModel.findOne({
-                            _id: message.content.substring(7, message.content.length - 1)
-                        })
-                        if (doc) {
-                            doc.sharedMessages!.banned = true
-                            doc.save()
-                            ;(message.channel as TextChannel).send({
-                                content:
-                                    doc.username + ' has been banned from using the shared channel.'
-                            })
-                        }
-                    } catch (err) {
-                        console.log(err)
-                    }
-                } else if (message.content.startsWith('>unban')) {
-                    const doc = await UserModel.findOne({
-                        _id: message.content.substring(9, message.content.length - 1)
-                    })
-                    try {
-                        if (doc) {
-                            doc.sharedMessages!.banned = false
-                            doc.save()
-                            ;(message.channel as TextChannel).send({
-                                content:
-                                    doc.username +
-                                    ' has been unbanned from using the shared channel.'
-                            })
-                        }
-                    } catch (err) {
-                        console.log(err)
-                    }
-                }
-                return
-            }
+            saveSharedMessage(message)
+            handleCommands(message)
 
             const doc = await UserModel.findOne({ _id: message.author.id })
             if (doc!.sharedMessages!.banned) {
@@ -79,7 +33,24 @@ const event: BotEvent = {
                         const channel = message.client.channels.cache.get(
                             doc.options?.sharedChannelID!
                         )
-                        if (channel) {
+                        if (message.type === MessageType.Reply && channel) {
+                            ;(channel as TextChannel).send({
+                                // get message in the text channel that the message is replying to
+                                content: `**${message.author.username}** in **${
+                                    message.guild?.name
+                                }** replied to **${
+                                    message.channel.messages.cache.get(
+                                        message.reference?.messageId!
+                                    )!.author?.username
+                                }**'s message \n"${
+                                    message.channel.messages.cache.get(
+                                        message.reference?.messageId!
+                                    )!.content
+                                } "\nsaying: \n${message.content}`,
+                                files: message.attachments.map(attachment => attachment.url),
+                                allowedMentions: { roles: [], users: [] }
+                            })
+                        } else if (channel) {
                             ;(channel as TextChannel).send({
                                 content: `**${message.author.username}** in **${message.guild?.name}** said: \n${message.content}`,
                                 files: message.attachments.map(attachment => attachment.url),
