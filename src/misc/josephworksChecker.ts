@@ -4,9 +4,15 @@ import Parser from 'rss-parser'
 import JosephworksModel from '../schemas/josephworksArticle'
 
 export default async function (client: Client<boolean>) {
-    const feedData = await new Parser().parseURL(
-        'http://192.168.1.65/rss.xml'
-    )
+    let feedData
+
+    try {
+        feedData = await new Parser().parseURL(
+            'http://192.168.1.65/rss.xml'
+        )
+    } catch (err) {
+        console.error(err)
+    }
 
     feedData.items.forEach(async item => {
         const articleId = crypto
