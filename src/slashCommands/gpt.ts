@@ -1,6 +1,7 @@
 import { PermissionFlagsBits, SlashCommandBuilder } from 'discord.js'
 import { SlashCommand } from '../types'
-const { Configuration, OpenAIApi } = require('openai')
+import { Configuration, OpenAIApi } from 'openai'
+import OpenAIRequestModel from '../schemas/OpenAIRequest'
 
 const GPTCommand : SlashCommand = {
     command: new SlashCommandBuilder()
@@ -23,13 +24,23 @@ const GPTCommand : SlashCommand = {
 
         const response = await openai.createCompletion({
             model: 'text-davinci-003',
-            prompt: message?.value,
+            prompt: message?.value as string,
             temperature: 0.7,
             max_tokens: 512,
             top_p: 1,
             frequency_penalty: 0,
             presence_penalty: 0
         })
+
+        const OpenAIRequest = new OpenAIRequestModel({
+            user: interaction.member!.user.id,
+            guild: interaction.guild!.id,
+            channel: interaction.channel!.id,
+            question: message?.value as string,
+            answer: response.data.choices[0].text,
+            date: new Date()
+        })
+        OpenAIRequest.save()
 
         await interaction.reply(interaction.member!.user.username + ' asked ' + message?.value + '\n' + response.data.choices[0].text)
     },
