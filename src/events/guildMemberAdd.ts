@@ -1,4 +1,5 @@
 import { EmbedBuilder, GuildMember, TextChannel } from 'discord.js'
+import { getGuildOption } from '../functions'
 import UserModel from '../schemas/User'
 import { BotEvent } from '../types'
 
@@ -7,27 +8,25 @@ const event: BotEvent = {
     execute: async (member: GuildMember) => {
         // TODO: Make this disabled by default and implement /options welcome #channel
         // exclude channel search in all other guilds
-        const channel = member.guild.channels.cache.find(c => c.name === 'welcome')
-        const welcome = new EmbedBuilder()
-            .setTitle('New User Has Joined!')
-            .setDescription(
-                `Welcome To Our Server ${member.user}! We are happy to have you in this server! You are member number ${member.guild.memberCount} btw!`
-            )
-            .setColor('#2F3136')
-            .setThumbnail(member.displayAvatarURL())
-            .setTimestamp()
-            .setFooter({
-                text: 'JosephWorks Discord Bot',
-                iconURL: 'https://media.discordapp.net/stickers/979183132165148712.png'
+        const channel = await getGuildOption(member.guild!, 'welcomeChannelID')
+        if (channel) {
+            ;(member.guild.channels.cache.get(channel) as TextChannel)?.send({
+                embeds: [
+                    new EmbedBuilder()
+                        .setTitle('New User Has Joined!')
+                        .setDescription(
+                            `Welcome To Our Server ${member.user}! We are happy to have you in this server! You are member number ${member.guild.memberCount} btw!`
+                        )
+                        .setColor('#2F3136')
+                        .setThumbnail(member.displayAvatarURL())
+                        .setTimestamp()
+                        .setFooter({
+                            text: 'JosephWorks Discord Bot',
+                            iconURL: 'https://media.discordapp.net/stickers/979183132165148712.png'
+                        })
+                ]
             })
-        if (!channel) {
-            return console.log(
-                'You do not have a channel called welcome, please make one or set the name of the channel in line 27 of the code.'
-            )
         }
-        (channel as TextChannel)?.send({
-            embeds: [welcome]
-        })
 
         const doc = await UserModel.findById(member.id)
         try {

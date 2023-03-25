@@ -21,7 +21,8 @@ const GuildSchema = new Schema({
     }],
     options: {
         prefix: { type: String, default: process.env.PREFIX },
-        sharedChannelID: { type: String }
+        sharedChannelID: { type: String },
+        welcomeChannelID: { type: String }
     }
 }, { versionKey: false, collectionName: 'Guilds', _id: false })
 

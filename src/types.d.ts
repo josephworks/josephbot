@@ -19,6 +19,7 @@ export interface Command {
 interface GuildOptions {
     prefix: string,
     sharedChannelID: string,
+    welcomeChannelID: string
 }
 
 export interface IGuild extends mongoose.Document {

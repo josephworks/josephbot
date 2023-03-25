@@ -12,6 +12,8 @@ config()
 
 const client = new Client({ intents: 131071 })
 
+// deleteCommands()
+
 client.slashCommands = new Collection<string, SlashCommand>()
 client.commands = new Collection<string, Command>()
 client.cooldowns = new Collection<string, number>()
@@ -26,7 +28,5 @@ setInterval(function () {
     malCheckerBless(client)
     josephworksChecker(client)
 }, 7000)
-
-// deleteCommands()
 
 client.login(process.env.TOKEN)
