@@ -85,10 +85,10 @@ const event: BotEvent = {
             if (guildPrefix) prefix = guildPrefix
         }
 
-        if (!message.content.startsWith(prefix)) return
+        if (!message.content.startsWith(prefix!)) return
         if (message.channel.type !== ChannelType.GuildText) return
 
-        const args = message.content.substring(prefix.length).split(' ')
+        const args = message.content.substring(prefix!.length).split(' ')
         let command = message.client.commands.get(args[0])
 
         if (!command) {
