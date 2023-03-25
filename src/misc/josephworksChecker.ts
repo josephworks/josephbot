@@ -44,7 +44,7 @@ export default async function (client: Client<boolean>) {
                         text: 'JosephWorks Discord Bot',
                         iconURL: 'https://media.discordapp.net/stickers/979183132165148712.png'
                     })
-                ;(client.guilds.cache.get(process.env.GUILD_ID)!.channels.cache.get('993667595293180014')! as TextChannel).send({
+                ;(client.guilds.cache.get(process.env.GUILD_ID!)!.channels.cache.get('993667595293180014')! as TextChannel).send({
                     embeds: [newPost]
                 })
             }

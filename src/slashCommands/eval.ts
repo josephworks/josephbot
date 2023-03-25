@@ -14,7 +14,7 @@ const command: SlashCommand = {
         }),
     execute: async interaction => {
         // Check if the user has the id 275808021605777409
-        if (interaction.user.id === '275808021605777409') {
+        if (interaction.user.id === process.env.OWNER_ID) {
             // If the user has the id, run the code
             const code = interaction.options.get('code')?.value as string
             let evaled = ''

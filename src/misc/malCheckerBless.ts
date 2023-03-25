@@ -1,4 +1,4 @@
-import { Client, EmbedBuilder, TextChannel } from 'discord.js'
+import { Client } from 'discord.js'
 import * as crypto from 'node:crypto'
 import Parser from 'rss-parser'
 import AnimeBlessModel from '../schemas/Anime'

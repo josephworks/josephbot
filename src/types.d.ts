@@ -36,20 +36,6 @@ export interface BotEvent {
     execute: (...args?) => void
 }
 
-declare global {
-    namespace NodeJS {
-        interface ProcessEnv {
-            TOKEN: string,
-            CLIENT_ID: string,
-            GUILD_ID: string,
-            OWNER_ID: string,
-            PREFIX: string,
-            MONGO_URI: string,
-            MONGO_DATABASE_NAME: string
-        }
-    }
-}
-
 declare module 'discord.js' {
     export interface Client {
         slashCommands: Collection<string, SlashCommand>
