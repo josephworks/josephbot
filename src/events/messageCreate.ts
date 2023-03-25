@@ -1,4 +1,4 @@
-import { ChannelType, Message, MessageType, TextChannel } from 'discord.js'
+import { Message, TextChannel } from 'discord.js'
 import { checkPermissions, getGuildOption, sendTimedMessage } from '../functions'
 import { handleCommands, saveSharedMessage } from '../SharedMessage'
 import { BotEvent } from '../types'
@@ -6,6 +6,7 @@ import mongoose from 'mongoose'
 import MessageModel from '../schemas/Message'
 import GuildModel from '../schemas/Guild'
 import UserModel from '../schemas/User'
+import { ChannelType, MessageType } from 'discord-api-types/v10'
 
 const event: BotEvent = {
     name: 'messageCreate',
@@ -39,11 +40,11 @@ const event: BotEvent = {
                                 content: `**${message.author.username}** in **${
                                     message.guild?.name
                                 }** replied to **${
-                                    message.channel.messages.cache.get(
+                                    (message.channel as TextChannel).messages.cache.get(
                                         message.reference?.messageId!
                                     )!.author?.username
                                 }**'s message \n"${
-                                    message.channel.messages.cache.get(
+                                    (message.channel as TextChannel).messages.cache.get(
                                         message.reference?.messageId!
                                     )!.content
                                 }"\nsaying: \n${message.content}`,
@@ -111,7 +112,7 @@ const event: BotEvent = {
             You don't have enough permissions to use this command. 
             \n Needed permissions: ${neededPermissions.join(', ')}
             `,
-                message.channel,
+                (message.channel as TextChannel),
                 5000
             )
         }
@@ -122,7 +123,7 @@ const event: BotEvent = {
                     `You have to wait ${Math.floor(
                         Math.abs(Date.now() - cooldown) / 1000
                     )} second(s) to use this command again.`,
-                    message.channel,
+                    (message.channel as TextChannel),
                     5000
                 )
                 return

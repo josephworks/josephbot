@@ -1,7 +1,9 @@
-import { ActivityType, Client, OAuth2Scopes, PermissionFlagsBits } from 'discord.js'
+import { Client } from 'discord.js'
 import { BotEvent } from '../types'
 import { color, SaveGuild, SaveGuildMembers } from '../functions'
 import GuildModel from '../schemas/Guild'
+import { ActivityType, OAuth2Scopes, PermissionFlagsBits } from 'discord-api-types/v10'
+import { PresenceUpdateStatus } from 'discord-api-types/payloads/v10'
 
 const event: BotEvent = {
     name: 'ready',
@@ -9,14 +11,14 @@ const event: BotEvent = {
     execute: (client: Client) => {
         console.log(color('text', `✅ Logged in as ${color('variable', client.user?.tag)}`))
 
-        client.user?.setPresence({
+        client.user!.setPresence({
             activities: [
                 {
                     name: 'with JosephWorks',
                     type: ActivityType.Playing
                 }
             ],
-            status: 'online'
+            status: PresenceUpdateStatus.Online
         })
 
         const link = client.generateInvite({

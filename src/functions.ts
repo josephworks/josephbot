@@ -1,9 +1,10 @@
 import chalk from 'chalk'
-import { Guild, GuildMember, PermissionFlagsBits, PermissionResolvable, TextChannel } from 'discord.js'
+import { Guild, GuildMember, PermissionResolvable, TextChannel } from 'discord.js'
 import GuildModel from './schemas/Guild'
 import { GuildOption } from './types'
 import mongoose from 'mongoose'
 import UserModel from './schemas/User'
+import { PermissionFlagsBits } from 'discord-api-types/v10'
 
 type colorType = 'text' | 'variable' | 'error'
 
