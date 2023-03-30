@@ -43,11 +43,11 @@ const event: BotEvent = {
                                     (message.channel as TextChannel).messages.cache.get(
                                         message.reference?.messageId!
                                     )!.author?.username
-                                }**'s message \n"${
+                                }**'s message: \n> ${
                                     (message.channel as TextChannel).messages.cache.get(
                                         message.reference?.messageId!
                                     )!.content
-                                }"\nsaying: \n${message.content}`,
+                                }\nsaying: \n${message.content}`,
                                 files: message.attachments.map(attachment => attachment.url),
                                 allowedMentions: { roles: [], users: [] }
                             })
