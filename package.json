@@ -13,7 +13,7 @@
         "url": "git+https://github.com/josephworks/josephbot.git"
     },
     "author": "Joseph Robinson (JosephWorks)",
-    "license": "ISC",
+    "license": "GNU GPL v3",
     "bugs": {
         "url": "https://github.com/josephworks/josephbot/issues"
     },
