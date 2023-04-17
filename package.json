@@ -20,7 +20,7 @@
     "homepage": "https://github.com/josephworks/josephbot#readme",
     "dependencies": {
         "@discordjs/opus": "^0.9.0",
-        "@discordjs/rest": "^1.6.0",
+        "@discordjs/rest": "^1.7.0",
         "@discordjs/voice": "^0.15.0",
         "chalk": "^4.1.2",
         "discord-api-types": "^0.37.37",
