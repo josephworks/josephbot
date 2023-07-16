@@ -29,6 +29,8 @@ const command: SlashCommand = {
 
             if (evaled === '') evaled = 'No result.'
 
+            if (typeof evaled !== 'string') evaled = require('util').inspect(evaled)
+
             await interaction.reply({
                 embeds: [
                     new EmbedBuilder()
