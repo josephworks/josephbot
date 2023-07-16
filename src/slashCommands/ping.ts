@@ -13,8 +13,7 @@ const command: SlashCommand = {
                     .setAuthor({ name: 'JosephBot' })
                     .setDescription(`🏓 Pong! \n 📡 Ping: ${interaction.client.ws.ping}`)
                     .setColor(getThemeColor('text'))
-            ],
-            ephemeral: true
+            ]
         })
     },
     cooldown: 10
