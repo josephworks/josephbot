@@ -3,7 +3,7 @@ import UserModel from './schemas/User'
 import SharedMessageModel from './schemas/SharedMessage'
 import GuildModel from './schemas/Guild'
 
-export async function saveSharedMessage(message: Message) {
+export async function saveSharedMessage (message: Message) {
     const newSharedMessage = new SharedMessageModel({
         user: message.author.id,
         username: message.author.username,
@@ -16,7 +16,7 @@ export async function saveSharedMessage(message: Message) {
     await newSharedMessage.save()
 }
 
-export async function handleCommands(message: Message) {
+export async function handleCommands (message: Message) {
     if (message.content.startsWith('>') && message.member?.id === process.env.OWNER_ID) {
         if (message.content.startsWith('>ban')) {
             try {
@@ -35,8 +35,7 @@ export async function handleCommands(message: Message) {
                         )
                         ;(channel as TextChannel).send({
                             content:
-                                userDoc.username +
-                                ' has been banned from using the shared channel.'
+                                userDoc.username + ' has been banned from using the shared channel.'
                         })
                     })
                 }
@@ -54,13 +53,10 @@ export async function handleCommands(message: Message) {
                     'options.sharedChannelID': { $ne: message.channel.id }
                 })
                 docs.forEach(doc => {
-                    const channel = message.client.channels.cache.get(
-                        doc.options?.sharedChannelID!
-                    )
+                    const channel = message.client.channels.cache.get(doc.options?.sharedChannelID!)
                     ;(channel as TextChannel).send({
                         content:
-                            userDoc.username +
-                            ' has been unbanned from using the shared channel.'
+                            userDoc.username + ' has been unbanned from using the shared channel.'
                     })
                 })
             }
