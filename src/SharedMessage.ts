@@ -1,8 +1,9 @@
 import { Message, TextChannel } from 'discord.js'
 import UserModel from './schemas/User'
 import SharedMessageModel from './schemas/SharedMessage'
+import GuildModel from './schemas/Guild'
 
-export async function saveSharedMessage (message: Message) {
+export async function saveSharedMessage(message: Message) {
     const newSharedMessage = new SharedMessageModel({
         user: message.author.id,
         username: message.author.username,
@@ -15,40 +16,53 @@ export async function saveSharedMessage (message: Message) {
     await newSharedMessage.save()
 }
 
-export async function handleCommands (message: Message) {
+export async function handleCommands(message: Message) {
     if (message.content.startsWith('>') && message.member?.id === process.env.OWNER_ID) {
         if (message.content.startsWith('>ban')) {
             try {
-                const doc = await UserModel.findOne({
+                const userDoc = await UserModel.findOne({
                     _id: message.content.substring(7, message.content.length - 1)
                 })
-                if (doc) {
-                    doc.sharedMessages!.banned = true
-                    await doc.save()
-                    ;(message.channel as TextChannel).send({
-                        content:
-                            doc.username + ' has been banned from using the shared channel.'
+                if (userDoc) {
+                    userDoc.sharedMessages!.banned = true
+                    await userDoc.save()
+                    const docs = await GuildModel.find({
+                        'options.sharedChannelID': { $ne: message.channel.id }
+                    })
+                    docs.forEach(doc => {
+                        const channel = message.client.channels.cache.get(
+                            doc.options?.sharedChannelID!
+                        )
+                        ;(channel as TextChannel).send({
+                            content:
+                                userDoc.username +
+                                ' has been banned from using the shared channel.'
+                        })
                     })
                 }
             } catch (err) {
                 console.log(err)
             }
         } else if (message.content.startsWith('>unban')) {
-            const doc = await UserModel.findOne({
-                _id: message.content.substring(9, message.content.length - 1)
+            const userDoc = await UserModel.findOne({
+                _id: message.content.substring(7, message.content.length - 1)
             })
-            try {
-                if (doc) {
-                    doc.sharedMessages!.banned = false
-                    await doc.save()
-                    ;(message.channel as TextChannel).send({
+            if (userDoc) {
+                userDoc.sharedMessages!.banned = false
+                await userDoc.save()
+                const docs = await GuildModel.find({
+                    'options.sharedChannelID': { $ne: message.channel.id }
+                })
+                docs.forEach(doc => {
+                    const channel = message.client.channels.cache.get(
+                        doc.options?.sharedChannelID!
+                    )
+                    ;(channel as TextChannel).send({
                         content:
-                            doc.username +
+                            userDoc.username +
                             ' has been unbanned from using the shared channel.'
                     })
-                }
-            } catch (err) {
-                console.log(err)
+                })
             }
         }
     }
