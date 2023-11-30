@@ -1,6 +1,6 @@
 {
     "name": "josephbot",
-    "version": "2.1.0",
+    "version": "2.2.0",
     "description": "A discord bot made by JosephWorks",
     "main": "src/Bot.ts",
     "scripts": {
@@ -20,28 +20,28 @@
     "homepage": "https://github.com/josephworks/josephbot#readme",
     "dependencies": {
         "@discordjs/opus": "^0.9.0",
-        "@discordjs/rest": "^1.7.1",
-        "@discordjs/voice": "^0.16.0",
+        "@discordjs/rest": "^2.2.0",
+        "@discordjs/voice": "^0.16.1",
         "chalk": "4.1.2",
-        "discord-api-types": "^0.37.57",
-        "discord.js": "^14.13.0",
+        "discord-api-types": "^0.37.65",
+        "discord.js": "^14.14.1",
         "dotenv": "^16.3.1",
-        "mongoose": "^7.5.2",
-        "openai": "^3.3.0",
+        "mongoose": "^8.0.2",
+        "openai": "^4.20.1",
         "rss-parser": "^3.13.0"
     },
     "devDependencies": {
-        "@types/node": "^20.6.4",
-        "@typescript-eslint/eslint-plugin": "^6.7.2",
-        "@typescript-eslint/parser": "^6.7.2",
-        "eslint": "^8.50.0",
+        "@types/node": "^20.10.1",
+        "@typescript-eslint/eslint-plugin": "^6.13.1",
+        "@typescript-eslint/parser": "^6.13.1",
+        "eslint": "^8.54.0",
         "eslint-config-standard": "^17.1.0",
-        "eslint-plugin-import": "^2.28.1",
-        "eslint-plugin-n": "^16.1.0",
+        "eslint-plugin-import": "^2.29.0",
+        "eslint-plugin-n": "^16.3.1",
         "eslint-plugin-promise": "^6.1.1",
-        "eslint-plugin-unicorn": "^48.0.1",
-        "prettier": "^3.0.3",
+        "eslint-plugin-unicorn": "^49.0.0",
+        "prettier": "^3.1.0",
         "ts-node": "^10.9.1",
-        "typescript": "^5.2.2"
+        "typescript": "^5.3.2"
     }
 }

@@ -1,5 +1,25 @@
 import { model, Schema } from 'mongoose'
 
+export interface IGuild {
+    _id: string
+    name: string
+    owner: string
+    createdAt: Date
+    memberCount: string
+    channels: {
+        _id: string
+        name: string
+        type: string
+        createdAt: string
+        parent: string
+    }[]
+    options: {
+        prefix: string
+        sharedChannelID: string
+        welcomeChannelID: string
+    }
+}
+
 const GuildSchema = new Schema({
     _id: { required: true, type: String },
     name: { type: String },
@@ -26,6 +46,6 @@ const GuildSchema = new Schema({
     }
 }, { versionKey: false, collectionName: 'Guilds', _id: false })
 
-const GuildModel = model('Guilds', GuildSchema, 'Guilds')
+const GuildModel = model<IGuild>('Guilds', GuildSchema)
 
 export default GuildModel
