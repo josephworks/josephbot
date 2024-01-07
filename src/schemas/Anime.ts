@@ -5,7 +5,7 @@ const AnimeSchema = new Schema({
     title: { type: String },
     description: { type: String },
     link: { type: String },
-    pubDate: { type: String }
+    pubDate: { type: Date }
 }, { versionKey: false, collectionName: 'JosephAnime', _id: false })
 
 const AnimeModel = model('JosephAnime', AnimeSchema, 'JosephAnime')
