@@ -8,7 +8,7 @@ export default async function (client: Client<boolean>) {
 
     try {
         feedData = await new Parser().parseURL(
-            'http://192.168.1.65/rss.xml'
+            'http://192.168.1.9/rss.xml'
         )
     } catch (err) {
         console.error(err)
