@@ -25,20 +25,20 @@
         "discord-api-types": "^0.37.101",
         "discord.js": "^14.16.3",
         "dotenv": "^16.4.5",
-        "mongoose": "^8.7.0",
-        "openai": "^4.65.0",
+        "mongoose": "^8.7.1",
+        "openai": "^4.67.3",
         "rss-parser": "^3.13.0"
     },
     "devDependencies": {
-        "@types/node": "^22.7.4",
-        "@typescript-eslint/eslint-plugin": "^8.7.0",
-        "@typescript-eslint/parser": "^8.7.0",
-        "eslint": "^9.11.1",
-        "eslint-plugin-n": "^17.10.3",
+        "@types/node": "^22.7.5",
+        "@typescript-eslint/eslint-plugin": "^8.8.1",
+        "@typescript-eslint/parser": "^8.8.1",
+        "eslint": "^9.12.0",
+        "eslint-plugin-n": "^17.11.1",
         "eslint-plugin-promise": "^7.1.0",
         "eslint-plugin-unicorn": "^55.0.0",
         "prettier": "^3.3.3",
         "ts-node": "^10.9.2",
-        "typescript": "^5.6.2"
+        "typescript": "^5.6.3"
     }
 }
