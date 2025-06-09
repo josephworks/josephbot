@@ -1,0 +1,131 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model JosephAnime {
+  id          String   @id @map("_id")
+  title       String
+  description String
+  link        String
+  pubDate     DateTime
+
+  @@map("JosephAnime")
+}
+
+model Guild {
+  id           String    @id @map("_id")
+  name         String
+  owner        String
+  createdAt    DateTime
+  memberCount  Int
+  channels     Channel[] // Relation to Channel model
+  optionsId    String    @unique
+  options      GuildOptions @relation(fields: [optionsId], references: [id])
+
+  @@map("Guilds")
+}
+
+model Channel {
+  id         String   @id @map("_id")
+  name       String
+  type       String
+  createdAt  String
+  parent     String
+  guildId    String
+  guild      Guild    @relation(fields: [guildId], references: [id])
+
+  @@map("Channel")
+}
+
+model GuildOptions {
+  id                String   @id @default(uuid())
+  prefix            String
+  sharedChannelID   String
+  welcomeChannelID  String
+
+  guild Guild?
+}
+
+model JosephWorksRSS {
+  id      String   @id @map("_id")
+  title   String
+  link    String
+  pubDate DateTime
+  guid    String
+
+  @@map("JosephWorksRSS")
+}
+
+model Message {
+  id          String   @id @default(uuid())
+  user        String
+  guild       String
+  channel     String
+  content     String?
+  attachments Json?
+  date        DateTime
+
+  @@map("Messages")
+}
+
+model OpenAIRequest {
+  id       String   @id @default(uuid())
+  user     String
+  guild    String
+  channel  String
+  question String
+  answer   String
+  date     DateTime
+
+  @@map("OpenAIRequests")
+}
+
+model SharedMessage {
+  id          String   @id @default(uuid())
+  user        String
+  guild       String
+  channel     String
+  content     String?
+  attachments Json?
+  date        DateTime
+
+  @@map("SharedMessages")
+}
+
+model User {
+  id            String       @id @map("_id")
+  username      String
+  discriminator String
+  avatar        String?
+  createdAt     DateTime
+  bot           Boolean
+  guildData     GuildData[]
+  banned        Boolean      @default(false)
+
+  @@map("Users")
+}
+
+model GuildData {
+  id        String   @id @default(uuid())
+  guildID   String
+  roles     Json     // Array of roles, stored as JSON
+  joinedAt  DateTime
+  premium   DateTime?
+  vcPing    Boolean  @default(false)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@map("UserGuildData")
+}

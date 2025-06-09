@@ -1,7 +1,7 @@
 import { Client, EmbedBuilder, TextChannel } from 'discord.js'
 import * as crypto from 'node:crypto'
 import Parser from 'rss-parser'
-import AnimeModel from '../schemas/Anime'
+import { prisma } from '../functions'
 
 export default async function (client: Client<boolean>) {
     const feedData = await new Parser().parseURL(
@@ -17,16 +17,21 @@ export default async function (client: Client<boolean>) {
 
         try {
             // look for an anime in the collection with the same id
-            const doc = await AnimeModel.findById(animeId)
+            const doc = await prisma.josephAnime.findFirst({
+                where: {
+                    id: animeId
+                }
+            })
             if (!doc) {
-                const newAnime = new AnimeModel({
-                    _id: animeId,
-                    title: item.title,
-                    description: item.content,
-                    link: item.link,
-                    pubDate: new Date(item.pubDate ?? '')
+                await prisma.josephAnime.create({
+                    data: {
+                        id: animeId,
+                        title: item.title ?? '',
+                        description: item.content ?? '',
+                        link: item.link ?? '',
+                        pubDate: new Date(item.pubDate ?? '')
+                    }
                 })
-                newAnime.save()
 
                 // send a message to the server
                 const newPost = new EmbedBuilder()

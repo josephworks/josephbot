@@ -1,11 +1,7 @@
 import { Message, TextChannel } from 'discord.js'
-import { checkPermissions, getGuildOption, sendTimedMessage } from '../functions'
+import { checkPermissions, getGuildOption, prisma, sendTimedMessage } from '../functions'
 import { handleCommands, saveSharedMessage } from '../SharedMessage'
 import { BotEvent } from '../types'
-import mongoose from 'mongoose'
-import MessageModel from '../schemas/Message'
-import GuildModel from '../schemas/Guild'
-import UserModel from '../schemas/User'
 import { ChannelType, MessageType } from 'discord-api-types/v10'
 
 const event: BotEvent = {
@@ -18,16 +14,23 @@ const event: BotEvent = {
             saveSharedMessage(message)
             handleCommands(message)
 
-            const doc = await UserModel.findOne({ _id: message.author.id })
-            if (doc!.sharedMessages!.banned) {
+            const doc = await prisma.user.findUnique({
+                where: { id: message.author.id },
+            })
+            if (doc && doc.banned) {
                 sendTimedMessage(
                     'You are banned from using the shared channel.',
                     message.channel as TextChannel,
                     5000
                 )
             } else {
-                const docs = await GuildModel.find({
-                    'options.sharedChannelID': { $ne: message.channel.id }
+                const docs = await prisma.guild.findMany({
+                    where: {
+                        options: {
+                            sharedChannelID: { not: message.channel.id }
+                        }
+                    },
+                    include: { options: true }
                 })
                 try {
                     docs.forEach(doc => {
@@ -66,24 +69,24 @@ const event: BotEvent = {
 
             return
         } else {
-            const newMessage = new MessageModel({
-                user: message.author.id,
-                username: message.author.username,
-                guild: message.guild?.id,
-                channel: message.channel.id,
-                content: message.content,
-                attachments: message.attachments,
-                date: new Date()
+            await prisma.message.create({
+                data: {
+                    user: message.author.id,
+                    guild: message.guild?.id!,
+                    channel: message.channel.id,
+                    content: message.content,
+                    attachments: message.attachments,
+                    date: new Date()
+                }
+            }).catch(err => {
+                console.error('Failed to save message:', err)
             })
-            newMessage.save()
         }
         if (!message.member || message.member.user.bot) return
         if (!message.guild) return
         let prefix = process.env.PREFIX
-        if (mongoose.connection.readyState === 1) {
-            const guildPrefix = await getGuildOption(message.guild, 'prefix')
-            if (guildPrefix) prefix = guildPrefix
-        }
+        const guildPrefix = await getGuildOption(message.guild, 'prefix')
+        if (guildPrefix) prefix = guildPrefix
 
         if (!message.content.startsWith(prefix!)) return
         if (message.channel.type !== ChannelType.GuildText) return

@@ -1,7 +1,7 @@
 import { Client, EmbedBuilder, TextChannel } from 'discord.js'
 import * as crypto from 'node:crypto'
 import Parser from 'rss-parser'
-import JosephworksModel from '../schemas/josephworksArticle'
+import { prisma } from '../functions'
 
 export default async function (client: Client<boolean>) {
     let feedData
@@ -23,21 +23,26 @@ export default async function (client: Client<boolean>) {
 
         try {
             // look for an article in the collection with the same id
-            const doc = await JosephworksModel.findById(articleId)
+            const doc = await prisma.josephWorksRSS.findFirst({
+                where: {
+                    id: articleId
+                }
+            })
             if (!doc) {
-                const newArticle = new JosephworksModel({
-                    _id: articleId,
-                    title: item.title,
-                    link: item.link,
-                    pubDate: new Date(item.pubDate ?? ''),
-                    guid: item.guid
+                await prisma.josephWorksRSS.create({
+                    data: {
+                        id: articleId,
+                        title: item.title,
+                        link: item.link,
+                        pubDate: new Date(item.pubDate ?? ''),
+                        guid: item.guid
+                    }
                 })
-                newArticle.save()
 
                 // send a message to the server
                 const newPost = new EmbedBuilder()
                     .setTitle(item.title ?? '')
-                    .setURL(item.link?.replace('http://192.168.1.65', 'https://josephworks.net') ?? '')
+                    .setURL(item.link?.replace('http://192.168.1.9', 'https://josephworks.net') ?? '')
                     .setColor(0x00bfff)
                     .setTimestamp()
                     .setFooter({

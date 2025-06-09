@@ -16,10 +16,9 @@ CLIENT_ID=904217937362169937
 GUILD_ID=892995246168887316
 OWNER_ID=275808021605777409
 PREFIX=!
-MONGO_URI=mongodb://192.168.1.11
-MONGO_DATABASE_NAME=JosephBot
 OPENAI_ORG=org-4P2pAOTwwBnPOb3MIpyBKFLi
 OPENAI_API_KEY=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
+DATABASE_URL="postgresql://postgres:123456@192.168.1.3:5432/JosephBot?schema=public"
 ```
 
 ### Usages
@@ -34,8 +33,6 @@ OWNER_ID: Used to give permission to the /eval command and the >ban/unban comman
 
 PREFIX: The prefix is used for non-slash commands, also called chat commands.
 
-MONGO_URI: The connection string for the MongoDB Database. This is very important.
-
-MONGO_DATABASE_NAME: This defines the name of the MongoDB Database.
+DATABASE_URL: This is the URL to the PostgreSQL database that JosephBot uses to store data. It includes the username, password, host, port, and database name.
 
 OPENAI_API_KEY: This is the OpenAI key that is used for the /gpt command.

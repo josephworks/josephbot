@@ -1,7 +1,7 @@
 import { PermissionFlagsBits, SlashCommandBuilder } from 'discord.js'
 import { SlashCommand } from '../types'
 import OpenAI from 'openai'
-import OpenAIRequestModel from '../schemas/OpenAIRequest'
+import { prisma } from '../functions'
 
 const GPTCommand: SlashCommand = {
     command: new SlashCommandBuilder()
@@ -36,15 +36,18 @@ const GPTCommand: SlashCommand = {
             presence_penalty: 0
         })
 
-        const OpenAIRequest = new OpenAIRequestModel({
-            user: interaction.member!.user.id,
-            guild: interaction.guild!.id,
-            channel: interaction.channel!.id,
-            question: message?.value as string,
-            answer: response.choices[0].message?.content,
-            date: new Date()
+        await prisma.openAIRequest.create({
+            data: {
+                user: interaction.member!.user.id,
+                guild: interaction.guild!.id,
+                channel: interaction.channel!.id,
+                question: message?.value as string,
+                answer: response.choices[0].message?.content || '',
+                date: new Date()
+            }
+        }).catch(err => {
+            console.error('Failed to save OpenAI request:', err)
         })
-        OpenAIRequest.save()
 
         await interaction.editReply({ content: interaction.member!.user.username + ' asked ' + message?.value + '\n' + response.choices[0].message!.content! })
     },

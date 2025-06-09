@@ -1,5 +1,4 @@
 import { SlashCommandBuilder, CommandInteraction, Collection, PermissionResolvable, Message, AutocompleteInteraction } from 'discord.js'
-import mongoose from 'mongoose'
 
 export interface SlashCommand {
     command: SlashCommandBuilder | any,

@@ -1,7 +1,6 @@
 import { Client } from 'discord.js'
 import { BotEvent } from '../types'
-import { color, SaveGuild, SaveGuildMembers } from '../functions'
-import GuildModel from '../schemas/Guild'
+import { color, prisma, SaveGuild, SaveGuildMembers } from '../functions'
 import { ActivityType, OAuth2Scopes, PermissionFlagsBits } from 'discord-api-types/v10'
 import { PresenceUpdateStatus } from 'discord-api-types/payloads/v10'
 
@@ -30,7 +29,7 @@ const event: BotEvent = {
         const start = new Date()
 
         client.guilds.cache.forEach(async guild => {
-            if (!await GuildModel.findById(guild.id)) {
+            if (!await prisma.guild.findFirst({ where: { id: guild.id } })) {
                 SaveGuild(guild)
             }
 

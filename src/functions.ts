@@ -1,9 +1,6 @@
 import chalk from 'chalk'
 import { Guild, GuildMember, PermissionResolvable, TextChannel } from 'discord.js'
-import GuildModel from './schemas/Guild'
 import { GuildOption } from './types'
-import mongoose from 'mongoose'
-import UserModel from './schemas/User'
 import { PermissionFlagsBits } from 'discord-api-types/v10'
 
 type colorType = 'text' | 'variable' | 'error'
@@ -13,6 +10,9 @@ const themeColors = {
     variable: '#41bbf0',
     error: '#f52a2d'
 }
+
+import { PrismaClient } from './generated/prisma';
+export const prisma = new PrismaClient()
 
 export const getThemeColor = (color: colorType) => Number(`0x${themeColors[color].substring(1)}`)
 
@@ -45,62 +45,78 @@ export const sendTimedMessage = (message: string, channel: TextChannel, duration
 }
 
 export const getGuildOption = async (guild: Guild, option: GuildOption) => {
-    if (mongoose.connection.readyState === 0) throw new Error('Database not connected.')
-    const foundGuild = await GuildModel.findOne({ _id: guild.id })
+    const foundGuild = await prisma.guild.findFirst({ where: { id: guild.id }, include: { options: true } })
     if (!foundGuild || foundGuild.options === undefined) return null
     return foundGuild.options[option]
 }
 
 export const setGuildOption = async (guild: Guild, option: GuildOption, value: any) => {
-    if (mongoose.connection.readyState === 0) throw new Error('Database not connected.')
-    const foundGuild = await GuildModel.findOne({ _id: guild.id })
+    const foundGuild = await prisma.guild.findFirst({ where: { id: guild.id }, include: { options: true } })
     if (!foundGuild) return null
     foundGuild.options![option] = value
-    foundGuild.save()
+    await prisma.guild.update({
+        where: { id: guild.id },
+        data: { 
+            options: {
+                update: foundGuild.options
+            }
+        }
+    }).catch(err => {
+        console.error(color('error', `Failed to set guild option ${option} for guild ${guild.name} (${guild.id}): ${err.message}`))
+    })
 }
 
 export const SaveGuild = async (guild: Guild) => {
-    const newGuild = new GuildModel({
-        _id: guild.id,
-        name: guild.name,
-        owner: guild.ownerId,
-        createdAt: guild.createdAt,
-        memberCount: guild.memberCount,
-        channels: guild.channels.cache.map(channel => ({
-            _id: channel.id,
-            name: channel.name,
-            type: channel.type,
-            createdAt: channel.createdAt,
-            parent: channel.parentId
-        })),
-        options: {},
-        joinedAt: Date.now()
+    await prisma.guild.upsert({
+        where: { id: guild.id },
+        update: {
+            name: guild.name,
+            owner: guild.ownerId,
+            memberCount: guild.memberCount,
+            createdAt: guild.createdAt,
+            options: {}
+        },
+        create: {
+            id: guild.id,
+            name: guild.name,
+            owner: guild.ownerId,
+            memberCount: guild.memberCount,
+            createdAt: guild.createdAt,
+            options: {}
+        }
+    }).catch(err => {
+        console.error(color('error', `Failed to save guild ${guild.name} (${guild.id}): ${err.message}`))
     })
-    newGuild.save()
 }
 
 export const SaveGuildMembers = async (guild: Guild) => {
     guild.members.cache.forEach(async member => {
         try {
-            const doc = await UserModel.findById(member.id)
+            const doc = await prisma.user.findFirst({
+                where: { id: member.id },
+                include: { guildData: true }
+            })
             if (!doc) {
-                const newUser = new UserModel({
-                    _id: member.id,
-                    username: member.user.username,
-                    discriminator: member.user.discriminator,
-                    avatar: member.user.avatar,
-                    createdAt: member.user.createdAt,
-                    bot: member.user.bot,
-                    guildData: [
-                        {
-                            guildID: member.guild.id,
-                            roles: member.roles.cache.map(role => role.id),
-                            joinedAt: member.joinedAt,
-                            premium: member.premiumSince
+                await prisma.user.create({
+                    data: {
+                        id: member.id,
+                        username: member.user.username,
+                        discriminator: member.user.discriminator,
+                        avatar: member.user.avatar,
+                        createdAt: member.user.createdAt,
+                        bot: member.user.bot,
+                        guildData: {
+                            create: [
+                                {
+                                    guildID: member.guild.id,
+                                    roles: member.roles.cache.map(role => role.id),
+                                    joinedAt: member.joinedAt!,
+                                    premium: member.premiumSince
+                                }
+                            ]
                         }
-                    ]
+                    }
                 })
-                newUser.save()
             } else {
                 let hasData = false
                 for (let i = 0; i < doc.guildData.length; i++) {
@@ -109,17 +125,16 @@ export const SaveGuildMembers = async (guild: Guild) => {
                     }
                 }
                 if (!hasData) {
-                    doc.guildData.push({
-                        guildID: member.guild.id,
-                        roles: member.roles.cache.map(role => role.id),
-                        joinedAt: member.joinedAt!,
-                        premium: member.premiumSince!,
-                        options: {
+                    await prisma.guildData.update({
+                        where: { id: member.guild.id },
+                        data: {
+                            roles: member.roles.cache.map(role => role.id),
+                            joinedAt: member.joinedAt!,
+                            premium: member.premiumSince,
                             vcPing: false
                         }
                     })
                 }
-                await doc.save()
             }
         } catch (err) {
             console.log(err)

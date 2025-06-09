@@ -1,18 +1,24 @@
 import { EmbedBuilder, GuildMember, SlashCommandBuilder } from 'discord.js'
-import { getThemeColor } from '../functions'
+import { getThemeColor, prisma } from '../functions'
 import { SlashCommand } from '../types'
-import UserModel from '../schemas/User'
 
 const command: SlashCommand = {
     command: new SlashCommandBuilder().setName('vcping').setDescription('Gives the VC ping role.'),
     execute: async interaction => {
-        const doc = await UserModel.findById(interaction.user.id)
+        const doc = await prisma.user.findFirst({
+            where: { id: interaction.user.id },
+            include: { guildData: true }
+        })
 
         for (let i = 0; i < doc!.guildData.length; i++) {
             if (doc?.guildData[i].guildID === interaction.guild!.id) {
-                if (!doc?.guildData[i].options?.vcPing || doc?.guildData[i].options?.vcPing === false) {
-                    doc!.guildData[i].options!.vcPing = true
-                    doc!.save()
+                if (!doc?.guildData[i]?.vcPing || doc?.guildData[i].vcPing === false) {
+                    prisma.guildData.update({
+                        where: { id: doc!.guildData[i].id },
+                        data: { vcPing: true }
+                    }).catch(err => {
+                        console.error('Failed to update VC ping status:', err)
+                    })
 
                     // give user the role named 'VC Ping'
                     const role = interaction.guild!.roles.cache.find(r => r.name === 'VC Ping')
@@ -30,8 +36,12 @@ const command: SlashCommand = {
                         ]
                     })
                 } else {
-                    doc!.guildData[i].options!.vcPing = false
-                    doc!.save()
+                    prisma.guildData.update({
+                        where: { id: doc!.guildData[i].id },
+                        data: { vcPing: false }
+                    }).catch(err => {
+                        console.error('Failed to update VC ping status:', err)
+                    })
 
                     const role = interaction.guild!.roles.cache.find(r => r.name === 'VC Ping')
                     if (role && (interaction.member! as GuildMember).roles.cache.has(role.id)) {
