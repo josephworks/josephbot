@@ -12,9 +12,8 @@ export default async function (client: Client<boolean>) {
         )
     } catch (err) {
         console.error(err)
-    }
-
-    feedData.items.forEach(async item => {
+    } finally {
+        feedData.items.forEach(async item => {
         const articleId = crypto
             .createHash('md5')
             // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
@@ -56,5 +55,6 @@ export default async function (client: Client<boolean>) {
         } catch (err) {
             console.error(err)
         }
-    })
+        })
+    }
 }
