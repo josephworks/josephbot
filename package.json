@@ -30,7 +30,7 @@
         "rss-parser": "^3.13.0"
     },
     "devDependencies": {
-        "@types/node": "^22.15.31",
+        "@types/node": "^24.0.7",
         "@typescript-eslint/eslint-plugin": "^8.34.0",
         "@typescript-eslint/parser": "^8.34.0",
         "eslint": "^9.29.0",
