@@ -21,7 +21,7 @@
     "dependencies": {
         "@discordjs/rest": "^2.5.0",
         "@discordjs/voice": "^0.18.0",
-        "@prisma/client": "^6.9.0",
+        "@prisma/client": "^6.15.0",
         "chalk": "4.1.2",
         "discord-api-types": "^0.38.11",
         "discord.js": "^14.19.3",
