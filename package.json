@@ -19,28 +19,28 @@
     },
     "homepage": "https://github.com/josephworks/josephbot#readme",
     "dependencies": {
-        "@discordjs/rest": "^2.5.0",
+        "@discordjs/rest": "^2.6.0",
         "@discordjs/voice": "^0.18.0",
-        "@prisma/client": "^6.9.0",
+        "@prisma/client": "^6.16.2",
         "chalk": "4.1.2",
-        "discord-api-types": "^0.38.11",
-        "discord.js": "^14.19.3",
-        "dotenv": "^16.5.0",
-        "openai": "^5.3.0",
+        "discord-api-types": "^0.38.25",
+        "discord.js": "^14.22.1",
+        "dotenv": "^16.6.1",
+        "openai": "^5.20.3",
         "rss-parser": "^3.13.0"
     },
     "devDependencies": {
-        "@types/node": "^22.15.31",
-        "@typescript-eslint/eslint-plugin": "^8.34.0",
-        "@typescript-eslint/parser": "^8.34.0",
-        "eslint": "^9.29.0",
-        "eslint-plugin-n": "^17.20.0",
+        "@types/node": "^22.18.4",
+        "@typescript-eslint/eslint-plugin": "^8.44.0",
+        "@typescript-eslint/parser": "^8.44.0",
+        "eslint": "^9.35.0",
+        "eslint-plugin-n": "^17.23.0",
         "eslint-plugin-promise": "^7.2.1",
         "eslint-plugin-unicorn": "^59.0.1",
-        "globals": "^16.2.0",
-        "prettier": "^3.5.3",
-        "prisma": "^6.9.0",
+        "globals": "^16.4.0",
+        "prettier": "^3.6.2",
+        "prisma": "^6.16.2",
         "ts-node": "^10.9.2",
-        "typescript": "^5.8.3"
+        "typescript": "^5.9.2"
     }
 }
