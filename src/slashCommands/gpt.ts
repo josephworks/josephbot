@@ -6,11 +6,11 @@ import { prisma } from '../functions'
 const GPTCommand: SlashCommand = {
     command: new SlashCommandBuilder()
         .setName('gpt')
-        .setDescription('Sends a message to the GPT-3 API.')
+        .setDescription('Sends a message to the GPT-5 API.')
         .addStringOption(option => {
             return option
                 .setName('message')
-                .setDescription('Query to be sent to the GPT-3 API.')
+                .setDescription('Query to be sent to the GPT-5 API.')
                 .setRequired(true)
         })
         .setDefaultMemberPermissions(PermissionFlagsBits.SendMessages),
@@ -24,13 +24,13 @@ const GPTCommand: SlashCommand = {
         })
 
         const response = await openai.chat.completions.create({
-            model: 'gpt-4.1-nano',
+            model: 'gpt-5.2',
             messages: [
                 { role: 'system', content: 'You are a helpful technical assistant.' },
                 { role: 'user', content: message?.value as string }
             ],
             temperature: 1,
-            max_tokens: 256,
+            max_tokens: 512,
             top_p: 1,
             frequency_penalty: 0,
             presence_penalty: 0
