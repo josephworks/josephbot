@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import 'dotenv/config'
 import { dirname, join } from 'path'
 import { Client, Collection } from 'discord.js'
