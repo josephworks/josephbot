@@ -3,6 +3,7 @@
     "version": "3.0.0",
     "description": "A discord bot made by JosephWorks",
     "main": "src/Bot.ts",
+    "type": "module",
     "scripts": {
         "prod": "tsx src/Bot.ts",
         "start": "nodemon src/Bot.ts",
@@ -31,7 +32,8 @@
         "rss-parser": "^3.13.0"
     },
     "devDependencies": {
-        "@types/node": "^22.19.15",
+        "@eslint/js": "^10.0.1",
+        "@types/node": "^24.12.0",
         "@typescript-eslint/eslint-plugin": "^8.57.0",
         "@typescript-eslint/parser": "^8.57.0",
         "eslint": "^10.0.3",

@@ -3,7 +3,8 @@ import globals from "globals";
 import tsParser from "@typescript-eslint/parser";
 import js from "@eslint/js";
 
-module.exports = {
+export default {
+    files: ["**/*.ts"],
     ignores: ["**/node_modules", "**/dist"],
 
     plugins: {
@@ -13,12 +14,11 @@ module.exports = {
     languageOptions: {
         globals: {
             ...globals.browser,
-            ...globals.commonjs,
         },
 
         parser: tsParser,
         ecmaVersion: 2024,
-        sourceType: "script",
+        sourceType: "module",
     },
 
     rules: {

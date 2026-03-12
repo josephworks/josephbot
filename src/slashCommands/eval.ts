@@ -1,4 +1,5 @@
 import { EmbedBuilder, SlashCommandBuilder } from 'discord.js'
+import { inspect } from 'node:util'
 import { getThemeColor } from '../functions'
 import { SlashCommand } from '../types'
 
@@ -29,7 +30,7 @@ const command: SlashCommand = {
 
             if (evaled === '') evaled = 'No result.'
 
-            if (typeof evaled !== 'string') evaled = require('util').inspect(evaled)
+            if (typeof evaled !== 'string') evaled = inspect(evaled)
 
             await interaction.reply({
                 embeds: [

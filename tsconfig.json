@@ -1,12 +1,12 @@
 {
     "compilerOptions": {
         "target": "ESNext",
-        "module": "CommonJS",
+        "module": "ESNext",
         "rootDir": ".",
         "outDir": "./dist/",
         "strict": true,
         "useUnknownInCatchVariables": false,
-        "moduleResolution": "Node",
+        "moduleResolution": "Bundler",
         "importHelpers": true,
         "experimentalDecorators": true,
         "esModuleInterop": true,
