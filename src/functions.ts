@@ -1,4 +1,3 @@
-import chalk from 'chalk'
 import { Guild, GuildMember, PermissionResolvable, TextChannel } from 'discord.js'
 import { GuildOption } from './types'
 import { PermissionFlagsBits } from 'discord-api-types/v10'
@@ -20,7 +19,11 @@ export const prisma = new PrismaClient({ adapter })
 export const getThemeColor = (color: colorType) => Number(`0x${themeColors[color].substring(1)}`)
 
 export const color = (color: colorType, message: any) => {
-    return chalk.hex(themeColors[color])(message)
+    const hex = themeColors[color].substring(1)
+    const r = parseInt(hex.substring(0, 2), 16)
+    const g = parseInt(hex.substring(2, 4), 16)
+    const b = parseInt(hex.substring(4, 6), 16)
+    return `\x1b[38;2;${r};${g};${b}m${message}\x1b[0m`
 }
 
 export const checkPermissions = (member: GuildMember, permissions: Array<PermissionResolvable>) => {
