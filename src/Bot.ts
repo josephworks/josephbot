@@ -1,11 +1,9 @@
 /* eslint-disable no-unused-vars */
-import { config } from 'dotenv'
-config()
-
+import 'dotenv/config'
+import { join } from 'path'
 import { Client, Collection } from 'discord.js'
 import { Command, SlashCommand } from './types'
 import { readdirSync } from 'fs'
-import { join } from 'path'
 import malChecker from './misc/malChecker'
 import deleteCommands from './misc/deleteCommands'
 

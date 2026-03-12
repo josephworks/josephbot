@@ -4,7 +4,7 @@
     "description": "A discord bot made by JosephWorks",
     "main": "src/Bot.ts",
     "scripts": {
-        "prod": "pm2 start src/Bot.ts",
+        "prod": "tsx src/Bot.ts",
         "start": "nodemon src/Bot.ts",
         "lint": "eslint src\\*"
     },
