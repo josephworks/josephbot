@@ -5,9 +5,9 @@ import { ActivityType, OAuth2Scopes, PermissionFlagsBits } from 'discord-api-typ
 import { PresenceUpdateStatus } from 'discord-api-types/payloads/v10'
 
 const event: BotEvent = {
-    name: 'ready',
+    name: 'clientReady',
     once: true,
-    execute: (client: Client) => {
+    execute: async (client: Client) => {
         console.log(color('text', `✅ Logged in as ${color('variable', client.user?.tag)}`))
 
         client.user!.setPresence({
@@ -28,13 +28,13 @@ const event: BotEvent = {
 
         const start = new Date()
 
-        client.guilds.cache.forEach(async guild => {
+        for (const guild of client.guilds.cache.values()) {
             if (!await prisma.guild.findFirst({ where: { id: guild.id } })) {
-                SaveGuild(guild)
+                await SaveGuild(guild)
             }
 
-            SaveGuildMembers(guild)
-        })
+            await SaveGuildMembers(guild)
+        }
 
         const diff = new Date().getTime() - start.getTime()
         console.log(

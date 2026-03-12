@@ -1,13 +1,13 @@
 /* eslint-disable no-unused-vars */
+import { config } from 'dotenv'
+config()
+
 import { Client, Collection } from 'discord.js'
 import { Command, SlashCommand } from './types'
-import { config } from 'dotenv'
 import { readdirSync } from 'fs'
 import { join } from 'path'
 import malChecker from './misc/malChecker'
-import josephworksChecker from './misc/josephworksChecker'
 import deleteCommands from './misc/deleteCommands'
-config()
 
 const client = new Client({ intents: 131071 })
 
@@ -24,7 +24,6 @@ readdirSync(handlersDir).forEach(handler => {
 
 setInterval(function () {
     malChecker(client)
-    josephworksChecker(client)
 }, 7000)
 
 client.login(process.env.TOKEN)

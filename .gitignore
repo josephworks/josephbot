@@ -60,3 +60,4 @@ dist
 .pnp.*
 
 /src/generated/prisma
+/generated

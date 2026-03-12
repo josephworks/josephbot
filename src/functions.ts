@@ -11,8 +11,11 @@ const themeColors = {
     error: '#f52a2d'
 }
 
-import { PrismaClient } from './generated/prisma';
-export const prisma = new PrismaClient()
+import { PrismaClient } from '../generated/prisma/client';
+import { PrismaPg } from '@prisma/adapter-pg';
+const connectionString = `${process.env.DATABASE_URL}`
+const adapter = new PrismaPg({ connectionString })
+export const prisma = new PrismaClient({ adapter })
 
 export const getThemeColor = (color: colorType) => Number(`0x${themeColors[color].substring(1)}`)
 
@@ -125,13 +128,21 @@ export const SaveGuildMembers = async (guild: Guild) => {
                     }
                 }
                 if (!hasData) {
-                    await prisma.guildData.update({
+                    await prisma.guildData.upsert({
                         where: { id: member.guild.id },
-                        data: {
+                        update: {
                             roles: member.roles.cache.map(role => role.id),
                             joinedAt: member.joinedAt!,
                             premium: member.premiumSince,
-                            vcPing: false
+                        },
+                        create: {
+                            guildID: member.guild.id,
+                            user: {
+                                connect: { id: member.id }
+                            },
+                            roles: member.roles.cache.map(role => role.id),
+                            joinedAt: member.joinedAt!,
+                            premium: member.premiumSince,
                         }
                     })
                 }
