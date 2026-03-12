@@ -21,18 +21,12 @@ interface GuildOptions {
     welcomeChannelID: string
 }
 
-export interface IGuild extends mongoose.Document {
-    _id: string,
-    options: GuildOptions
-    joinedAt: Date
-}
-
 export type GuildOption = keyof GuildOptions
 
 export interface BotEvent {
     name: string,
     once?: boolean | false,
-    execute: (...args?) => void
+    execute: (...args: any[]) => void
 }
 
 declare module 'discord.js' {
