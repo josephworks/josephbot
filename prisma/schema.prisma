@@ -21,8 +21,8 @@ model JosephAnime {
   score              Int      @default(0)
   numWatchedEpisodes Int      @default(0)
   numTotalEpisodes   Int      @default(0)
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @default(now())
+  createdAt          DateTime
+  updatedAt          DateTime
 
   @@map("JosephAnime")
 }

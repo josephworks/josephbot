@@ -95,20 +95,6 @@ export default async function (client: Client<boolean>) {
                 await channel.send({ embeds: [embed] })
 
             } else {
-                // TODO: Remove this block after first run — backfills dates for existing records
-                const malCreatedAt = new Date(entry.created_at * 1000)
-                const needsDateBackfill = existing.createdAt.getTime() !== malCreatedAt.getTime()
-                if (needsDateBackfill) {
-                    await prisma.josephAnime.update({
-                        where: { id: animeId },
-                        data: {
-                            createdAt: malCreatedAt,
-                            updatedAt: new Date(entry.updated_at * 1000)
-                        }
-                    })
-                    continue
-                }
-
                 // Check for changes
                 const statusChanged = existing.status !== entry.status
                 const episodesChanged = existing.numWatchedEpisodes !== entry.num_watched_episodes
