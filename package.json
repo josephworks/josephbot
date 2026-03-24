@@ -27,8 +27,7 @@
         "discord-api-types": "^0.38.42",
         "discord.js": "^14.25.1",
         "dotenv": "^17.3.1",
-        "openai": "^6.32.0",
-        "rss-parser": "^3.13.0"
+        "openai": "^6.32.0"
     },
     "devDependencies": {
         "@eslint/js": "^10.0.1",
