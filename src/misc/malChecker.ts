@@ -9,6 +9,8 @@ interface MALAnimeEntry {
     anime_url: string
     anime_num_episodes: number
     num_watched_episodes: number
+    created_at: number
+    updated_at: number
 }
 
 const STATUS_LABELS: Record<number, string> = {
@@ -83,7 +85,9 @@ export default async function (client: Client<boolean>) {
                         status: entry.status,
                         score: entry.score,
                         numWatchedEpisodes: entry.num_watched_episodes,
-                        numTotalEpisodes: entry.anime_num_episodes
+                        numTotalEpisodes: entry.anime_num_episodes,
+                        createdAt: new Date(entry.created_at * 1000),
+                        updatedAt: new Date(entry.updated_at * 1000)
                     }
                 })
 
@@ -91,6 +95,20 @@ export default async function (client: Client<boolean>) {
                 await channel.send({ embeds: [embed] })
 
             } else {
+                // TODO: Remove this block after first run — backfills dates for existing records
+                const malCreatedAt = new Date(entry.created_at * 1000)
+                const needsDateBackfill = existing.createdAt.getTime() !== malCreatedAt.getTime()
+                if (needsDateBackfill) {
+                    await prisma.josephAnime.update({
+                        where: { id: animeId },
+                        data: {
+                            createdAt: malCreatedAt,
+                            updatedAt: new Date(entry.updated_at * 1000)
+                        }
+                    })
+                    continue
+                }
+
                 // Check for changes
                 const statusChanged = existing.status !== entry.status
                 const episodesChanged = existing.numWatchedEpisodes !== entry.num_watched_episodes
@@ -105,7 +123,9 @@ export default async function (client: Client<boolean>) {
                             status: entry.status,
                             score: entry.score,
                             numWatchedEpisodes: entry.num_watched_episodes,
-                            numTotalEpisodes: entry.anime_num_episodes
+                            numTotalEpisodes: entry.anime_num_episodes,
+                            createdAt: new Date(entry.created_at * 1000),
+                            updatedAt: new Date(entry.updated_at * 1000)
                         }
                     })
 
@@ -137,7 +157,7 @@ function buildEmbed(entry: MALAnimeEntry, description: string): EmbedBuilder {
         .setURL(getAnimeUrl(entry))
         .setDescription(description)
         .setColor(STATUS_COLORS[entry.status] ?? 0x00bfff)
-        .setTimestamp()
+        .setTimestamp(new Date(entry.updated_at * 1000))
         .setFooter({
             text: 'JosephWorks Discord Bot',
             iconURL: 'https://media.discordapp.net/stickers/979183132165148712.png'

@@ -14,13 +14,15 @@ datasource db {
 }
 
 model JosephAnime {
-  id                 String @id @map("_id") // MAL anime URL
+  id                 String   @id @map("_id") // MAL anime URL
   title              String
-  imageUrl           String @default("")
-  status             Int    @default(0)
-  score              Int    @default(0)
-  numWatchedEpisodes Int    @default(0)
-  numTotalEpisodes   Int    @default(0)
+  imageUrl           String   @default("")
+  status             Int      @default(0)
+  score              Int      @default(0)
+  numWatchedEpisodes Int      @default(0)
+  numTotalEpisodes   Int      @default(0)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @default(now())
 
   @@map("JosephAnime")
 }
