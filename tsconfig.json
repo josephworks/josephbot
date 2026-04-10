@@ -18,8 +18,7 @@
         "removeComments": true,
         "noImplicitAny": false,
         "typeRoots": ["node_modules/@types"],
-        "sourceMap": false,
-        "baseUrl": "./"
+        "sourceMap": false
     },
     "files": ["./src/Bot.ts"],
     "include": ["./src/**/*"],

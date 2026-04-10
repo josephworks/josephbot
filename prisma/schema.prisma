@@ -14,7 +14,8 @@ datasource db {
 }
 
 model JosephAnime {
-  id                 String   @id @map("_id") // MAL anime URL
+  id                 String   @id @default(uuid()) @map("_id")
+  animeId            String   // MAL anime URL path e.g. "/anime/12345/Title"
   title              String
   imageUrl           String   @default("")
   status             Int      @default(0)

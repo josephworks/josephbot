@@ -72,14 +72,15 @@ export default async function (client: Client<boolean>) {
 
         try {
             const existing = await prisma.josephAnime.findFirst({
-                where: { id: animeId }
+                where: { animeId },
+                orderBy: { updatedAt: 'desc' }
             })
 
             if (!existing) {
                 // New anime added to the list
                 await prisma.josephAnime.create({
                     data: {
-                        id: animeId,
+                        animeId,
                         title: entry.anime_title,
                         imageUrl: getImageUrl(entry),
                         status: entry.status,
@@ -101,9 +102,9 @@ export default async function (client: Client<boolean>) {
                 const scoreChanged = existing.score !== entry.score
 
                 if (statusChanged || episodesChanged || scoreChanged) {
-                    await prisma.josephAnime.update({
-                        where: { id: animeId },
+                    await prisma.josephAnime.create({
                         data: {
+                            animeId,
                             title: entry.anime_title,
                             imageUrl: getImageUrl(entry),
                             status: entry.status,
