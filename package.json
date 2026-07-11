@@ -24,25 +24,33 @@
         "@discordjs/voice": "^0.19.2",
         "@prisma/adapter-pg": "^7.8.0",
         "@prisma/client": "^7.8.0",
-        "discord-api-types": "^0.38.47",
-        "discord.js": "^14.26.4",
+        "discord-api-types": "^0.38.49",
+        "discord.js": "^14.26.5",
         "dotenv": "^17.4.2",
-        "openai": "^6.36.0"
+        "openai": "^6.46.0"
     },
     "devDependencies": {
         "@eslint/js": "^10.0.1",
-        "@types/node": "^24.12.2",
-        "@typescript-eslint/eslint-plugin": "^8.59.2",
-        "@typescript-eslint/parser": "^8.59.2",
-        "eslint": "^10.3.0",
-        "eslint-plugin-n": "^18.0.1",
-        "eslint-plugin-unicorn": "^64.0.0",
-        "globals": "^17.6.0",
+        "@types/node": "^26.1.1",
+        "@typescript-eslint/eslint-plugin": "^8.63.0",
+        "@typescript-eslint/parser": "^8.63.0",
+        "eslint": "^10.7.0",
+        "eslint-plugin-n": "^18.2.2",
+        "eslint-plugin-unicorn": "^71.1.0",
+        "globals": "^17.7.0",
         "nodemon": "^3.1.14",
-        "prettier": "^3.8.3",
+        "prettier": "^3.9.5",
         "prisma": "^7.8.0",
         "ts-node": "^10.9.2",
-        "tsx": "^4.21.0",
-        "typescript": "^6.0.3"
+        "tsx": "^4.23.0",
+        "typescript": "^7.0.2"
+    },
+    "overrides": {
+        "@typescript-eslint/parser": {
+            "typescript": "^7.0.2"
+        },
+        "@typescript-eslint/eslint-plugin": {
+            "typescript": "^7.0.2"
+        }
     }
 }
